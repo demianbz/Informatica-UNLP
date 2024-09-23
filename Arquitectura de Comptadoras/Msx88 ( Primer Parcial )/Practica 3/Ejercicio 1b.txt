@@ -1,0 +1,34 @@
+;b)  Escribir un programa que verifique si la llave de más a la izquierda 
+;está prendida. Si es así, mostrar en pantalla el mensaje “Llave prendida”,
+;y de lo contrario mostrar “Llave apagada”. Solo importa el valor de la 
+;llave de más a la izquierda (bit más significativo). Recordar que las
+;llaves se manejan con las teclas 0-7.
+
+;PIO
+  PA EQU 30H
+  PB EQU 31H
+  CA EQU 32H
+  CB EQU 33H
+  
+ORG 1000H
+  PRENDIDA DB "Llave prendida"
+  FINAL_P DB ?
+
+ORG 1500H
+  APAGADA DB "Llave apagada"
+  FINAL_A DB ?
+
+ORG 2000H
+ IN AL,PA
+ CMP AL, 10000000b
+ JNZ LLAVE_APAGADA ;LLAVE APAGADA
+               ;LLAVE PRENDIDA
+LLAVE_PRENDIDA:MOV BX, OFFSET PRENDIDA
+               MOV AL, OFFSET FINAL_P - OFFSET PRENDIDA
+               INT 7
+               JMP FIN
+ LLAVE_APAGADA:MOV BX,OFFSET APAGADA
+               MOV AL, OFFSET FINAL_A - OFFSET APAGADA
+               INT 7
+FIN:INT 0 
+END
