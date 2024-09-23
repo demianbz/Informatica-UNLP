@@ -1,0 +1,59 @@
+program P1E7;
+
+var
+  nombre,nombremax1,nombremax2,nombremin2,nombremin1 : String;
+  tiempo, max1, max2 , min1, min2: real;
+  i: integer;
+begin
+
+  max1:=-1; max2:=-1; {inicializo los maximos}
+  min1:=9999; min2:=9999; {inicializo los min}
+  nombremax1 := 'vacio';
+  nombremax2 := 'vacio';
+  nombremin1 := 'vacio';
+  nombremin2 := 'vacio';
+
+  for i:=1 to 5 do begin
+
+    writeln('Ingrese el nombre : ' );
+    readln(nombre);
+    writeln('Ingrese el tiempo : ' );
+    readln(tiempo);
+    {Max}
+    if (tiempo > max1) then begin {evalúo máximo 1}
+      max2:=max1;
+      nombremax2:=nombremax1;
+      max1:=tiempo;
+      nombremax1:=nombre;
+    end
+    else
+      if (tiempo > max2) then begin {evalúa máximo 2}
+        max2:=tiempo;
+        nombremax2:=nombre;
+      end;
+
+    {Min}
+     if (tiempo < min1) then begin {evalúo Min 1}
+      min2:=min1;
+      nombremin2:=nombremin1;
+      min1:=tiempo;
+      nombremin1:=nombre;
+    end
+    else
+      if (tiempo < min2) then begin {evalúa Min 2}
+        min2:=tiempo;
+        nombremin2:=nombre;
+      end;
+
+
+
+
+  end;
+
+
+  writeln('Nombre 1 mas tiempo: ', nombremax1 , ' tiempo : ' ,max1:1:2  );
+  writeln('Nombre 2 mas tiempo: ', nombremax2, ' tiempo : ' ,max2:1:2);
+  writeln('Nombre 1 menos tiempo: ', nombremin1 , ' tiempo : ' ,min1:1:2  );
+  writeln('Nombre 2 menos tiempo: ', nombremin2, ' tiempo : ' ,min2:1:2);
+  readln();
+end.

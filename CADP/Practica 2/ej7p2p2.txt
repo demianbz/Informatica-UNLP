@@ -1,0 +1,22 @@
+program practica2_2_ejercicio7;
+procedure cantidadYSumaDigitos(num:integer; var suma,cant: integer);
+begin
+  suma:= 0;
+  cant:= 0;
+  while (num <> 0) do begin
+      suma:= suma + (num mod 10);
+      cant:= cant + 1; 
+      num:= num div 10;
+  end;
+end;
+var
+    n, s, c, totalDigitosLeidos: integer;
+begin
+    totalDigitosLeidos := 0;
+    repeat
+        readln(n);
+        cantidadYSumaDigitos(n,s,c);
+        totalDigitosLeidos := totalDigitosLeidos + c;
+    until (s = 10);
+    writeln('cantidad Total digitos leidos: ', totalDigitosLeidos);
+end.

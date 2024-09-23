@@ -1,0 +1,46 @@
+program ej6p4;
+const
+	tam=5;
+type
+	vector=array[1..tam]of integer;
+	
+procedure leervector(var v:vector);
+var
+	i:integer;
+begin
+	for i:= 1 to tam do
+	begin
+		write('ingrese un numero:');readln(v[i]);
+	end;
+end;
+procedure elementomaxymin(v:vector;var max,posmax,min,posmin:integer);
+var
+	i,num:integer;
+begin
+	for i:=1 to tam do
+	begin
+		num:=v[i];
+		if(num>max)then
+		begin
+			max:=v[i];
+			posmax:=i;
+		end;
+		if(num<min)then
+		begin
+			min:=v[i];
+			posmin:=i;
+		end;
+	end;
+end;
+var
+	v:vector;
+	max,min,posmax,posmin:integer;
+begin
+	max:=-9999;
+	posmax:=0;
+	min:=9999;
+	posmin:=0;
+	leervector(v);
+	elementomaxymin(v,max,posmax,min,posmin);
+	writeln('la posicion del mayor elemento:',max,' es: ',posmax,' la posicion del menor elemento:',min,' es: ',posmin);
+end.

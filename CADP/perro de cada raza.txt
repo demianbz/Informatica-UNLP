@@ -1,0 +1,34 @@
+program cortecontrol;
+type
+	perro=record
+	raza:string;
+	nombre:string;
+	edad:integer;
+end;
+procedure leerperro(var ani:perro);
+begin
+	writeln('ingrese la raza del perro');
+	readln(ani.raza);
+	writeln('ingrese el nombre del perro');
+	readln(ani.nombre);
+	writeln('ingrese la edad del perro');
+	readln(ani.edad);
+end;
+var
+	ani:perro;
+	cant:integer;
+	actual:string;
+begin
+	leerperro(ani);
+	while(ani.raza <> 'xxx')do
+	begin
+		cant:=0;
+		actual:=ani.raza;
+		while((ani.raza <> 'xxx') and (ani.raza = actual))do
+		begin
+			cant:=cant+1;
+			leerperro(ani);
+		end;
+		writeln('la cantidad de la raza ',actual,' es ',cant);
+	end;
+end.

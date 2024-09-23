@@ -1,0 +1,96 @@
+{Enunciado 2
+Se leen datos de empleados de una empresa multinacional. De cada empleado se conoce
+su código de empleado (entre 1 y 2000), el código de país donde trabaja (entre 1 y 25), la
+antigüedad en años y el sueldo bruto en dólares. La lectura finaliza al ingresar el código de
+empleado 0. La información se lee ordenada por código de país.
+Realizar un programa que procese la información de los empleados, e informe:
+● el país con mayor cantidad de empleados
+● la cantidad de empleados de más de 10 años de antigüedad cuyo sueldo bruto no
+alcance los 1500 dólares
+● los códigos de los empleados que cobran el mejor sueldo en cada país}
+
+program cuatro_x_cuatro_enunciado_2;
+const
+	cant_empleados=2000;
+	cant_paises=25;
+type
+	codigos_empleados=0..cant_empleados;
+	codigos_paises=0..cant_paises;
+	
+	empleado=record
+		codigo:codigos_empleados;
+		pais:codigos_paises;
+		antiguedad:integer;
+		sueldo:real;
+	end;
+	info_sueldo=record
+		codigo:codigos_empleados;
+		sueldo:real;
+	end;
+procedure leerEmpleado(var e:empleado);
+begin
+	write('Ingrese el codigo del empleado:');
+	readln(e.codigo);
+	if(e.codigo<>0) then
+	begin
+		write('Ingrese el pais del empleado:');
+		readln(e.pais);
+		write('Ingrese la antiguedad del empleado:');
+		readln(e.antiguedad);
+		write('Ingrese el sueldo del empleado:');
+		readln(e.sueldo);
+	end;
+end;
+procedure actualizarMaximo(var max: info_sueldo; cod:codigos_empleados; sueldo:real);
+begin
+	if(max.sueldo>sueldo)then
+	begin
+		max.sueldo:=sueldo;
+		max.codigo:=cod;
+	end;
+end;
+function cumple(e:empleado):boolean;
+begin
+	cumple:=(e.antiguedad > 10)and(e.sueldo < 1500);
+end;
+procedure procesarDatos(var cantEmp:integer; var paisMax: codigos_paises);
+var
+	e:empleado;
+	cantPaisActual,cantPaisMax:integer;
+	pais_actual:codigos_paises;
+	mejorSueldo:info_sueldo;
+begin
+	leerEmpleado(e);
+	cantPaisMax:= -1;
+	while(e.codigo<>0)do
+	begin
+		pais_actual:=e.pais;
+		cantPaisActual:= 0;
+		mejorSueldo.sueldo:= -1;
+		mejorSueldo.codigo:= 0;
+		while(e.codigo<>0)and(pais_actual=e.pais) do begin
+			cantPaisActual:=cantPaisActual + 1;
+			actualizarMaximo(mejorSueldo,e.codigo,e.sueldo);
+			if(cumple(e))then
+				cantEmp:=cantEmp+1;
+			leerEmpleado(e);
+		end;
+		if(cantPaisActual > cantPaisMax)then
+		begin
+		cantPaisMax:=cantPaisActual;
+		paisMax:=pais_actual;
+		end;
+		writeln('El codigo de empleado con mejor sueldo en el pais ',pais_actual,' es ',mejorSueldo.codigo);
+	end;
+end;
+var
+	cantEmpleados:integer;
+	paisMax:codigos_paises;
+	cantPaisMax:integer;
+begin
+	cantEmpleados:=0;
+	cantPaisMax:=0;
+	procesarDatos(cantEmpleados,paisMax);
+	writeln('El pais con mayor cantidad de empleados es ',paisMax);
+	writeln('la cantidad de empleados con mas de 10 anios de antiguedad cuyo sueldo bruto no alcance los 1500 dolares es ',cantEmpleados);
+end.

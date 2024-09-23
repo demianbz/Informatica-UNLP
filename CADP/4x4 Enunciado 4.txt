@@ -1,0 +1,134 @@
+{Enunciado 4
+Se leen datos de empleados de una empresa multinacional. De cada empleado se conoce
+su código de empleado (entre 1 y 2000), el código de país donde trabaja (entre 1 y 25), la
+antigüedad en años y el sueldo bruto en dólares. La lectura finaliza al ingresar el código de
+empleado 0.
+Realizar un programa que lea y almacene la información de los empleados en una
+estructura de datos adecuada. Una vez completada la carga, procese la información de los
+empleados, e informe:
+● el país con mayor cantidad de empleados
+● la cantidad de empleados de más de 10 años de antigüedad cuyo sueldo bruto no
+alcance los 1500 dólares
+● el código del empleado que cobra el mejor sueldo en cada país}
+
+program cuatro_x_cuatro_enunciado_4;
+const
+	cant_empleados=2000;
+	cant_paises=25;
+type
+	codigos_empleados=0..cant_empleados;
+	codigos_paises=0..cant_paises;
+	
+	empleado=record
+		codigo:codigos_empleados;
+		pais:codigos_paises;
+		antiguedad:integer;
+		sueldo:real;
+	end;
+	info_sueldo=record
+		codigo:codigos_empleados;
+		sueldo:real;
+	end;
+	vector_paises=array[codigos_paises]of integer;
+	vector_empleados=array[1..cant_empleados] of empleado;
+	vector_sueldos=array[codigos_paises]of info_sueldo;
+	
+procedure leerEmpleado(var e:empleado);
+begin
+	write('Ingrese el codigo del empleado:');
+	readln(e.codigo);
+	if(e.codigo<>0) then
+	begin
+		write('Ingrese el pais del empleado:');
+		readln(e.pais);
+		write('Ingrese la antiguedad del empleado:');
+		readln(e.antiguedad);
+		write('Ingrese el sueldo del empleado:');
+		readln(e.sueldo);
+	end;
+end;
+procedure cargarDatos(var empleados: vector_empleados; var dimL:codigos_empleados);
+var
+	e:empleado;
+begin
+	dimL:=0;
+	leerEmpleado(e);
+	while (e.codigo<>0) do
+	begin
+		dimL:=dimL+1;
+		empleados[dimL]:=e;
+		leerEmpleado(e);
+	end;
+end;
+procedure inicializarVectores(var v:vector_paises; var sueldos:vector_sueldos);
+var
+	i:codigos_paises;
+begin
+	for i:=1 to cant_paises do
+	begin
+		v[i]:=0;
+		sueldos[i].sueldo:= -1;
+	end;
+end;
+function cumple(e:empleado):boolean;
+begin
+	cumple:=(e.antiguedad > 10)and(e.sueldo < 1500);
+end;
+procedure actualizarMaximo(var max: info_sueldo; cod:codigos_empleados; sueldo:real);
+begin
+	if(max.sueldo>sueldo)then
+	begin
+		max.sueldo:=sueldo;
+		max.codigo:=cod;
+	end;
+end;
+procedure procesarDatos(empleados:vector_empleados;dimL:codigos_empleados;var v:vector_paises; var sueldos:vector_sueldos;var cantEmp:integer);
+var
+	e:empleado;
+	i:codigos_empleados;
+begin
+	for i:=1 to dimL do begin
+	e:=empleados[i];
+	v[e.pais]:=v[e.pais]+1;
+	if(cumple(e))then
+		cantEmp:=cantEmp+1;
+	actualizarMaximo(sueldos[e.pais],e.codigo,e.sueldo);
+	end;
+end;
+function maxPais(v:vector_paises):codigos_paises;
+var
+	i,max_cod_pais:codigos_paises;
+	max_cant:integer;
+begin
+	max_cant:= -1;
+	for i:= 1 to 25 do
+	begin
+		if(v[i] > max_cant) then
+		begin
+			max_cant:=v[i];
+			max_cod_pais:=i;
+		end;
+	end;
+	maxPais:=max_cod_pais;
+end;
+procedure imprimirCodigosPorPais(v:vector_sueldos);
+var
+	i:codigos_paises;
+begin
+	for i:=1 to cant_paises do
+		writeln('En el pais ',i,' el codigo con el mejor sueldo es ',v[i].codigo);
+end;
+var
+	empleadosPais: vector_paises;
+	mejoresSueldos: vector_sueldos;
+	cantEmpleados: integer;
+	empleados: vector_empleados;
+	dimL: codigos_empleados;
+begin
+	cargarDatos(empleados, dimL);
+	inicializarVectores(empleadosPais, mejoresSueldos);
+	procesarDatos(empleados, dimL, empleadosPais, mejoresSueldos, cantEmpleados);
+	writeln('El pais con mayor empleados es ',maxPais(empleadosPais));
+	imprimirCodigosPorPais(mejoresSueldos);
+	writeln('la cantidad de empleados con mas de 10 años de antiguedad cuyosueldp bruto no alcance los 1500 dolares ',cantEmpleados);
+end.
