@@ -1,0 +1,80 @@
+;d) * Escribir un programa que solicite ingresar caracteres por teclado y que recién al presionar la tecla F10
+;los envíe a la impresora a través de la PIO. No es necesario mostrar los caracteres en la pantalla
+
+; PIO y PIC
+  EOI EQU 20h
+  IMR EQU 21h
+  INT0 EQU 24h
+  ID_INT0 EQU 10
+  PA EQU 30h
+  PB EQU 31h
+  CA EQU 32h
+  CB EQU 33h
+  
+ORG 1000H
+  FLAG DB 0
+  LONGITUD DB 0
+  CADENA DB ?
+ORG 40
+  DIR_RUT dw RUT_F10
+ORG 3000h
+  ; CANCELAR INTERRUPCIONES FUTURAS
+  RUT_F10: MOV AL, 0FFH
+           OUT IMR, AL
+  ; INDICAMOS LA PROGRAMA QUE NO LEA MAS
+           MOV FLAG,1
+           MOV AL, 20h
+           OUT EOI, al
+IRET
+ORG 2000H
+  CLI
+  ; INICIALIZACION PIO PARA IMPRESORA
+  MOV AL, 0FDH
+  OUT CA, AL
+  MOV AL, 0
+  OUT CB, AL
+  IN AL, PA
+  AND AL, 0FDH
+  OUT PA, AL
+  
+  ; Inicialización del PIC
+  MOV AL, 0FEh ; FE = 1111 1110
+  OUT IMR, AL
+  MOV AL, ID_INT0
+  OUT INT0, AL
+  STI
+  
+  ; Lectura de cadena
+  MOV BX, OFFSET CADENA
+  LOOP: int 6 ; leer char
+  INC BX
+  INC LONGITUD
+  CMP FLAG, 0; verifico si presionaron f10
+  JZ LOOP
+  
+  ; Impresión de los caracteres leídos
+  MOV BX, OFFSET CADENA ; reiniciar puntero al comienzo
+  CONSULTA:IN AL, PA
+       AND AL, 1
+       JNZ CONSULTA
+       
+  ; Enviar carácter
+  MOV AL, [BX]
+  OUT PB, AL
+  
+  ; Pulso STROBE
+  IN AL, PA
+  OR AL, 02H
+  OUT PA, AL
+  
+  ; Reiniciar STROBE
+  IN AL, PA
+  AND AL, 0FDH
+  OUT PA, AL
+  
+  ; pasar al siguiente char
+  INC BX
+  DEC longitud
+  JNZ CONSULTA
+INT 0
+END

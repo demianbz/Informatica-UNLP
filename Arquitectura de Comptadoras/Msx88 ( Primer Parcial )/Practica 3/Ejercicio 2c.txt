@@ -1,0 +1,67 @@
+; c) * Escribir un programa que solicita el ingreso de cinco caracteres por 
+;teclado y los envía de a uno por vez a la impresora a través de la PIO a medida 
+;que se van ingresando. No es necesario mostrar los caracteres en la pantalla
+
+;PIO
+  PA EQU 30H
+  PB EQU 31H
+  CA EQU 32H
+  CB EQU 33H
+
+ORG 3000H 
+  ;Configuro CA
+  CONFIGURAR_PIO: MOV AL,01
+                  OUT CA,AL
+  ;Configurar CB
+                  MOV AL,00H
+                  OUT CB,AL
+  RET
+
+ORG 3100H
+  STROBE0: IN AL, PA
+           AND AL,0FDH ; 1111 1101
+           OUT PA,AL
+  RET
+
+ORG 3200H
+  STROBE1: IN AL,PA
+           OR AL,02 ; 0000 0010
+           OUT PA,AL
+  RET
+
+ORG 3300H
+  ;CONSULTA DE ESTADO
+  CONSULTA: IN AL,PA
+            AND AL,1
+            JNZ CONSULTA
+  RET
+
+ORG 3400H
+  IMPRIMIR_MENSAJE: MOV BX, OFFSET MSJ
+                    MOV AL, OFFSET FIN - OFFSET MSJ
+                    INT 7
+RET
+
+ORG 1200H
+  MSJ DB "Ingrse 5 Caracteres"
+  FIN DB ?
+
+ORG 1000H 
+  NUMERO_DE_CARACTERES DB 5
+  CARACTERES DB ?
+  
+ORG 2000H 
+  CALL CONFIGURAR_PIO
+  CALL IMPRIMIR_MENSAJE
+  MOV BX, OFFSET CARACTERES
+  MOV CL, NUMERO_DE_CARACTERES
+  LOOP: INT 6
+  CALL CONSULTA
+  MOV AL,[BX]
+  OUT PB,AL
+  CALL STROBE0
+  CALL STROBE1
+  DEC CL
+  JNZ LOOP
+INT 0
+END 

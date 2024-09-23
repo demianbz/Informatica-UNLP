@@ -1,0 +1,42 @@
+;d) Escribir un programa que solicite el ingreso de cinco caracteres por teclado y los
+;almacene en memoria.Una vez ingresados, que los envíe a la impresora a través del HAND
+;-SHAKE, en primer lugar tal cual fueron ingresados y a continuación en sentido inverso.
+;Utilizar el HAND-SHAKE en modo consulta de estado. 
+;¿Qué diferencias encuentra con el ejercicio 2c?
+
+
+EOI EQU 20H
+IMR EQU 21H
+INT2 EQU 26H
+DATO EQU 40H
+ESTADO EQU 41H
+
+ORG 1000H
+  NUMERO_DE_CARACTERES DB 5
+  CARACTERES DB ?
+
+ORG 1500H
+  MENSAJE DB "Ingrese 5 Caracteres"
+  FIN DB ?
+
+ORG 3000H
+  IMPRIMIR_MENSAJE: MOV BX,OFFSET MENSAJE
+                    MOV AL,OFFSET FIN - OFFSET MENSAJE
+                    INT 7
+  RET
+  CONSULTA: IN AL,ESTADO
+            AND AL,1
+            JNZ CONSULTA
+  RET
+ORG 2000H  
+  MOV BX, OFFSET CARACTERES
+  MOV CL, NUMERO_DE_CARACTERES
+  CALL IMPRIMIR_MENSAJE
+  LOOP: INT 6
+        CALL CONSULTA
+        MOV AL,[BX]
+        OUT DATO,AL
+        DEC CL
+        JNZ LOOP
+INT 0
+END

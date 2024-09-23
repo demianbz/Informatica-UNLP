@@ -1,0 +1,18 @@
+;Leer el estado de las llaves y prender las luces de aquellas llaves que
+;esten en 1.
+
+ORG 2000H
+  ;CONFIGURAMOS PA (ENTRADA) Y PB (SALIDA)
+  MOV AL,11111111B
+  OUT 32H,AL ;CA=11111111
+  MOV AL,00000000B
+  OUT 33H,AL ;CB=00000000
+
+  ;LEEMOS EL ESTADOS DE LAS LLAVES (PA)
+  IN AL,30H
+
+  ;MANDAR INFORMACION DE LAS LLAVES A LAS LUCES (PB)
+  OUT 31H,AL
+  
+INT 0
+END

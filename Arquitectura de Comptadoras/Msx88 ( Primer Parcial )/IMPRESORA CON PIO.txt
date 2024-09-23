@@ -1,0 +1,48 @@
+; Imprimir un Caracter - IMPRESORA CON PIO  
+
+;PIO
+  PA EQU 30H
+  PB EQU 31H
+  CA EQU 32H
+  CB EQU 33H
+
+ORG 3000H 
+  ;Configuro CA
+  CONFIGURAR_PIO: MOV AL,01
+                  OUT CA,AL
+  ;Configurar CB
+                  MOV AL,00H
+                  OUT CB,AL
+  RET
+
+ORG 3100H
+  STROBE0: IN AL, PA
+           AND AL,0FDH ; 1111 1101
+           OUT PA,AL
+  RET
+
+ORG 3200H
+  STROBE1: IN AL,PA
+           OR AL,02 ; 0000 0010
+           OUT PA,AL
+  RET
+
+ORG 3300H
+  ;CONSULTA DE ESTADO
+  CONSULTA: IN AL,PA
+            AND AL,1
+            JNZ CONSULTA
+  RET
+  
+ORG 1000H 
+  CARACTER DB "a"
+ORG 2000H 
+  CALL CONFIGURAR_PIO
+  CALL CONSULTA
+  ;ENVIAR CARACTER
+  MOV AL, CARACTER
+  OUT PB,AL
+  CALL STROBE0
+  CALL STROBE1
+INT 0
+END 

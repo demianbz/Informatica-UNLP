@@ -1,0 +1,33 @@
+; e) Escribir un programa que encienda una luz a la vez, de las ocho conectadas 
+;al puerto paralelo del microprocesador a través de la PIO, en el siguiente orden 
+;de bits:0-1-2-3-4-5-6-7-6-5-4-3-2-1-0-1-2-3-4-5-6-7-6-5-4-3-2-1-0-1-..., es decir,
+;00000001, 00000010,00000100, etc. Cada luz debe estar encendida durante un segundo
+;. El programa nunca termina.
+
+;PIO
+  PA EQU 30H
+  PB EQU 31H
+  CA EQU 32H
+  CB EQU 33H
+
+; Recibe el caracter a rotar en AH 
+; Devuelve el resultado también en AH 
+ORG 3000H 
+  ROTARIZQ: ADD AH, AH 
+  ADC AH, 0 
+  RET 
+ORG 1000H 
+  BIT DB 01H ; (00000001) en binario 
+ORG 2000H 
+  MOV AL,00H
+  OUT CB,AL
+  MOV AH, BIT ; AH = 00000001
+  MOV AL,AH
+  OUT PB,AL
+  SIG:CALL ROTARIZQ
+      MOV AL,AH
+      OUT PB,AL
+      CMP AH,10000000B
+      JMP SIG
+INT 0
+END 

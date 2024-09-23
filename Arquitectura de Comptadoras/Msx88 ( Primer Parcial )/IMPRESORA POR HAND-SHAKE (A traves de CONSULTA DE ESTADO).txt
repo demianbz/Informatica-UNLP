@@ -1,0 +1,21 @@
+;Uso de la impresora a traves del HAND_SHAKE, por CONSULTA DE ESTADO (Sin Interrupcion)
+
+DATO EQU 40H
+ESTADO EQU 41H
+
+ORG 1000H
+  CADENA DB "Milanesas"
+
+ORG 2000H  
+  MOV CL,9
+  MOV BX,OFFSET CADENA
+  LOOP: IN AL, ESTADO
+        AND AL,1
+        JNZ LOOP
+        MOV AL,[BX]
+        OUT DATO,AL
+        INC BX
+        DEC CL
+        JNZ LOOP
+INT 0
+END
