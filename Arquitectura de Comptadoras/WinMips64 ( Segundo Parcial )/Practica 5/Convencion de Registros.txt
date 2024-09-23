@@ -1,0 +1,44 @@
+;Pasar a Mayuscula una cadena de caracteres
+.data
+	cadena: .asciiz "Hola"
+.code
+	;Iniciar SP porque lo vamos a utilizar
+	daddi $sp, $0, 0x400
+	;Parametro: direccion de la cadena
+	daddi $a,$0,cadena
+	JAL mayus
+halt
+
+;recibe 
+;$a0: direcccion de comienzo
+
+mayus: daddi $sp,$sp,-16 ; decremento stack pointer en 16
+	   sd $ra,0($sp) ; guardo la direccion de retorno porque voy a llamar a otra subrutina 
+	   sd $s0,8($sp) ; guardo $s0 porque la otra subrutina me lo puede pisar y yo lo voy a usar
+	   dadd $s0,$a0,$0 ; guardo $a0 en $s0 porque lo voy a usar como puntero
+ loop: lbu $a0,0($s0) ;cargo en a0 el primer caracter 
+   	   beq $a0,$0,fin ; si a0 que es mi caracter es igual a cero termino
+	   JAL mayusCar ; llamo a la subrutina que verifica si es minuscula y convierte el caracter en mayuscula 
+	   sb $v0,0($s0) ; cargo el caracter en memoria 
+	   daddi $s0,$s0,1 ; uso  $s0 como puntero (desplazamiento)
+	   j loop 
+  fin: ld $ra, 0($sp) ; vuelvo a recuperar los valores 
+	   ld $s0,8($sp)
+	   daddi $sp,$sp,16
+	   jr $ra ; vuelo al programa principal 
+
+;recibe en $a0 caracter
+;devuelve en $v0 caracter mayuscula 
+;0x61 : ascii de "a"
+;0x7b : ascii de "z"
+;0x20 : distancia  entre mayusculas y minusculas 
+
+mayusCar: dadd $v0,$a0,$0 ; guardo en $v0 el caracter
+		  slti $t0,$v0, 0x61 ; comparo el caracter con "a" y si es menor guardo 1 en $t0 
+		  bnez $t0, salir ; si $t0 es 1 salgo porque significa que que el caracter es menor a "a" y entonces esta fuera de rango 
+		  slti $t0,$v0,0x7b ; comparo el caracter con "z" y si es menor guardo 1 en $t0 
+		  beqz $t0,salir ; si $t0 es 0 salgo porque significa que el caracter es mayor a "z" y entonces esta fuera de rango 
+		  daddi $v0,$v0,-0x20 ; hago la conversion a mayuscula, le resto a $v0 (el caracter) 0x20 qie es la distancia que hay entre las letras minusculas y mayusculas 
+   salir: jr $ra 
+	   
+	   

@@ -1,0 +1,20 @@
+; Intercambiar el  valor de los registros r4 y r6
+; Utilizando la pila, Ubicada en 0x400
+
+.code
+	daddi r29,r0,0x400 
+	daddi r4,r0,10
+	daddi r6,r0,20
+	;PUSH R4
+	daddi r29,r29,-8
+	sd r4,0(r29)
+	;PUSH R6
+	daddi r29,r29,-8
+	sd r6,0(r29)
+	;POP R4
+	ld r4,0(r29)
+	daddi r29,r29,8
+	;POP R6
+	ld r6,0(r29)
+	daddi r29,r29,8
+halt
