@@ -10,85 +10,78 @@ b) Informar para cada día y turno asignado, el nombre de la persona a entrevist
 NOTA: utilizar la clase Persona. Pensar en la estructura de datos a utilizar. Para comparar
 Strings use el método equals.
  */
-
 package ejercicio3p2;
 
-    import PaqueteLectura.Lector;
-   // import PaqueteLectura.GeneradorAleatorio;
-
+import PaqueteLectura.Lector;
+// import PaqueteLectura.GeneradorAleatorio;
 
 /**
  *
  * @author DEMIA
  */
-
-
 public class Ejercicio3P2 {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        
-        Persona[][] matriz = new Persona[5][8];
-        
-        int dimF=40 , dimL=0 , dimTot=1; //dimL = dia ( a lo sumo 5 ) t = turno
-        int i;
-        
-        int dni,edad;
-        String nom;
-        
-            System.out.println("------Dia "+ (dimL+1) + "------");       
-        for (i=0 ; i<8 ; i++){
-            System.out.println("Turno "+ (i+1));
-            System.out.print("Ingrese su Nombre: ");
-            nom = Lector.leerString();
-            System.out.print("Ingrese su DNI: ");
-            dni = Lector.leerInt();
-            System.out.print("Ingrese su edad: ");
-            edad = Lector.leerInt();
-            matriz[dimL][i] = new Persona(nom,dni,edad);
-        }
-        String nomz = "ZZZ";
-        String nombre = matriz[dimL][0].getNombre();
-        dimL++;
-        
-        while((dimTot <= dimF) && (!nombre.equals(nomz))){
-            System.out.println("------Dia "+ (dimL+1) + "------");       
-            i=0;
-            while (!nombre.equals(nomz) && (i<8)){
-                System.out.println("Turno "+ i);
-                System.out.print("Ingrese su Nombre: ");
-                nom = Lector.leerString();
-                if(!nom.equals(nomz)){
-                System.out.print("Ingrese su DNI: ");
-                dni = Lector.leerInt();
-                System.out.print("Ingrese su edad: ");
-                edad = Lector.leerInt();
-                matriz[dimL][i] = new Persona(nom,dni,edad);
-                i++;
-                }
-                nombre = matriz[dimL][i].getNombre();
-            }
-            dimL++;
-            dimTot++;
-        }
-        
-           
-        
-        int j;
-        
-        for (i=0 ; i<=dimL ; i++){
-            System.out.println("---------Dia "+ (i+1) +"---------");
-            for (j=0 ; j<8 ; j++){
-                System.out.print("Turno "+ (j+1));
-                System.out.println(" Nombre: "+ matriz[i][j].getNombre());
-            }
-        }
-      
-        System.out.println();
-        System.out.println();
-    }
-    
-}
+	/**
+	 * @param args the command line arguments
+	 */
+	public static void main(String[] args) {
 
+		Persona[][] matriz = new Persona[5][8];
+
+		int dimF = 40, dimTot = 0;
+
+		int dni, edad;
+		String nom;
+
+		int dimlD = 0, dimlT = 0; //dimlD = dimL Dia (filas) y dimlT =dimL Turnos (columnas)
+
+		System.out.print("Ingrese su Nombre: ");
+		nom = Lector.leerString();
+		System.out.println("------Dia " + (dimlD + 1) + "------");
+		dimlT = 0;
+
+		while (!nom.equals("ZZZ") && (dimlD < 5)) {
+			System.out.println("Turno " + (dimlT));
+
+			System.out.print("Ingrese su DNI: ");
+			dni = Lector.leerInt();
+			System.out.print("Ingrese su edad: ");
+			edad = Lector.leerInt();
+
+			matriz[dimlD][dimlT] = new Persona(nom, dni, edad);
+			System.out.print("Ingrese su Nombre: ");
+			nom = Lector.leerString();
+			dimlT++;
+			
+			if (dimlT == 8) {
+				dimlD++;
+				dimlT = 0;
+				System.out.println("------Dia " + (dimlD + 1) + "------");
+			}
+		}
+
+		//dimlD++; //Si no le pongo condicion despues para imprimir es hasta dimL -1, si no puedo usar una condicion
+		/*if(!nom.equals("ZZZ")) //Esta seria la otra opcion, si no llege a el corte sumo la dimL, porque sino llego al corte y la sumo igual
+			  dimlD++;
+		 */
+		int i, j;
+
+		for (i = 0; i < dimlD; i++) {     //Este for es para los dias que pueden estar incompletos
+			System.out.println("---------Dia " + (i + 1) + "---------");
+			for (j = 0; j < 8; j++) {    //Este es para los turnos que estan completos porque si dimlD es > 0 al menos un dia esta completo
+				System.out.print("'Turno " + j +"'");
+				System.out.println(" Nombre: " + matriz[i][j].getNombre());
+
+			}
+		}
+		int k;
+		System.out.println("---------Dia " + (i+1) + "---------");   //salgo del for de dias con el ultimo dia porque puso < y no <= ej si dimlD es = a 3 salgo en el 2 y queda dimL = 3
+		for (k = 0; k < dimlT; k++) {    //Este for es para el dia que quedo incompleto, con turnos incompletos = k
+			System.out.print("'Turno " + (k) +"'");
+			System.out.println(" Nombre: " + matriz[i][k].getNombre());
+		}
+
+		System.out.println();
+	}
+
+}
