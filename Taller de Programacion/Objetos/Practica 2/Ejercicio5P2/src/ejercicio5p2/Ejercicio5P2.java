@@ -91,22 +91,14 @@ public class Ejercicio5P2 {
         
         
         for(i=0 ; i<dimL ; i++){
-            
-            if(vector[i].getLocal().equals("River")){
-                if(vector[i].getGanador().equals("River"))
-                    cantRiver++;
-            } else {
-                if(vector[i].getVisitante().equals("River")){
-                    if(vector[i].getGanador().equals("River"))
-                        cantRiver++;
-                }
+            if(vector[i].getGanador().equals("River")){
+                cantRiver++;
             }
             
             if(vector[i].getLocal().equals("Boca")){
                 cantBoca=cantBoca+vector[i].getGolesLocal();
-            }
-            
-        }
+            } 
+         }
         
         System.out.println("");
         System.out.println("La cantidad de Partidos que gano River fueron: "+ cantRiver);
