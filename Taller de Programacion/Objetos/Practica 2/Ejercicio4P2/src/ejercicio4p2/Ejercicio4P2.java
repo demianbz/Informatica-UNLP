@@ -10,6 +10,7 @@ b) Informar para cada día: la cantidad de inscriptos al casting ese día y el n
 persona a entrevistar en cada turno asignado.
 
  */
+
 package ejercicio4p2;
 
     import PaqueteLectura.Lector;
@@ -39,36 +40,49 @@ public class Ejercicio4P2 {
 	nom = Lector.leerString();
 	dimlT = 0;
         
-        while (!nom.equals("ZZZ") && (dimlD < 5)){  //Mientras no llegue al nombre de corte y mientras no complete el ultimo dia
+        int cupos = 0;
+        
+        while (!nom.equals("ZZZ") && (cupos < 40 )){  //Mientras no llegue al nombre de corte y mientras no complete todos los cupos
             System.out.println("Turno "+ dimlT);       
-            System.out.println("Ingrese el dia en el que quiere ser atendido");
+            System.out.print("Ingrese el dia en el que quiere ser atendido: ");
             dia = Lector.leerInt();
             
             if(vecDias[dia] == 8){
-                System.out.println("El dia tiene los turnos completos");
+                System.out.println("--El dia tiene los turnos completos--");
             } else {
-                vecDias[dia]++;
+                System.out.println("--Dia disponible--");
                 System.out.print("Ingrese Su edad: ");
                 edad = Lector.leerInt();
                 System.out.print("Ingrese su DNI: ");
-                dni = Lector.leerInt();                
-                matriz [dimlD][dimlT] = new Persona(nom,dni,edad); 
-                
+                dni = Lector.leerInt(); 
+                dimlT = vecDias[dia];
+                matriz [dia][dimlT] = new Persona(nom,dni,edad); 
+                vecDias[dia]++;
                 System.out.print("Ingrese el Nombre: ");
                 nom = Lector.leerString();
-                dimlT++;            
-                
-                if(dimlT == 8){     //Si ya llene los 8 turnos
-                    dimlT=0;    //Reinicio los turnos
-                    dimlD++;    //Cambio de dia
-                    System.out.println("------Dia " + (dimlD + 1) + "------");                
-                }   
+                cupos++;
+         
+                 
             }        
         }
      
         int i,j;
         
-        for (i=0 ; i<dimlD ; i++){
+        System.out.println("");
+        
+        for (i=0 ; i<5 ; i++){
+                System.out.println("La Cantidad de inscriptos al casting el dia "+ (i+1) + " son: "+ vecDias[i]);
+            for (j=0 ; j<8 ; j++){
+                if(matriz[i][j] != null){
+                System.out.print("''Turno "+ (j) +"''");
+                System.out.println("Nombre: "+ matriz[i][j].getNombre());
+                }
+            }
+        }
+        
+        
+        
+        /*for (i=0 ; i<dimlD ; i++){
             System.out.println("La Cantidad de inscriptos al casting el dia "+ (i+1) + " son: "+ vecDias[i]);
             for (j=0 ; j<8 ; j++){
                 System.out.print("''Turno "+ (j) +"''");
@@ -83,7 +97,7 @@ public class Ejercicio4P2 {
             System.out.println("''Turno "+ (k) + "''");
             System.out.println("Nombre: "+ matriz[dimlD][k].getNombre());
             
-        }  
+        } */ 
         
     }
 }
