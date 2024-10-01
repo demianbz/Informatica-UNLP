@@ -1,21 +1,21 @@
-/* 4-A- Un hotel posee N habitaciones. De cada habitación conoce costo por noche, si está
-ocupada y, en caso de estarlo, guarda el cliente que la reservó (nombre, DNI y edad).
-(i) Genere las clases necesarias. Para cada una provea métodos getters/setters adecuados.
+/* 4-A- Un hotel posee N habitaciones. De cada habitaciÃ³n conoce costo por noche, si estÃ¡
+ocupada y, en caso de estarlo, guarda el cliente que la reservÃ³ (nombre, DNI y edad).
+(i) Genere las clases necesarias. Para cada una provea mÃ©todos getters/setters adecuados.
 (ii) Implemente los constructores necesarios para iniciar: los clientes a partir de nombre,
 DNI, edad; el hotel para N habitaciones, cada una desocupada y con costo aleatorio e/ 2000
 y 8000.
-(iii) Implemente en las clases que corresponda todos los métodos necesarios para:
-- Ingresar un cliente C en la habitación número X. Asuma que X es válido (es decir, está
-en el rango 1..N) y que la habitación está libre.
+(iii) Implemente en las clases que corresponda todos los mÃ©todos necesarios para:
+- Ingresar un cliente C en la habitaciÃ³n nÃºmero X. Asuma que X es vÃ¡lido (es decir, estÃ¡
+en el rango 1..N) y que la habitaciÃ³n estÃ¡ libre.
 - Aumentar el precio de todas las habitaciones en un monto recibido.
-- Obtener la representación String del hotel, siguiendo el formato:
-{Habitación 1: costo, libre u ocupada, información del cliente si está ocupada}
-…
-{Habitación N: costo, libre u ocupada, información del cliente si está ocupada}
+- Obtener la representaciÃ³n String del hotel, siguiendo el formato:
+{HabitaciÃ³n 1: costo, libre u ocupada, informaciÃ³n del cliente si estÃ¡ ocupada}
+â€¦
+{HabitaciÃ³n N: costo, libre u ocupada, informaciÃ³n del cliente si estÃ¡ ocupada}
 B- Realice un programa que instancie un hotel, ingrese clientes en distintas habitaciones,
 muestre el hotel, aumente el precio de las habitaciones y vuelva a mostrar el hotel.
-NOTAS: Reúse la clase Persona. Para cada método solicitado piense a qué clase debe
-delegar la responsabilidad de la operación */
+NOTAS: ReÃºse la clase Persona. Para cada mÃ©todo solicitado piense a quÃ© clase debe
+delegar la responsabilidad de la operaciÃ³n */
  
 package ejercicio4p3;
 
@@ -54,7 +54,7 @@ public class Ejercicio4P3 {
         }
         
         
-        //Mostrar el Hotel {Habitación N: costo, libre u ocupada, información del cliente si está ocupada}
+        //Mostrar el Hotel {HabitaciÃ³n N: costo, libre u ocupada, informaciÃ³n del cliente si estÃ¡ ocupada}
         System.out.println(H.toString());
         
         //Aumentar Precio

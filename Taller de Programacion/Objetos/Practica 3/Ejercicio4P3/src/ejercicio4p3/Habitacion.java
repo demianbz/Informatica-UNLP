@@ -5,15 +5,13 @@ public class Habitacion {
     
 
     
-    private int costo = GeneradorAleatorio.generarInt(6000)+2000;
+    private int costo;
     private boolean ocupada = false;
     private Persona cliente = null;
     
-    public Habitacion (Persona unCliente){
-        cliente = unCliente;
-        ocupada = true;
+    public Habitacion (int unCosto){
+        costo = unCosto;
     }
-    
     
     public int getCosto() {
         return costo;
@@ -39,15 +37,21 @@ public class Habitacion {
         this.cliente = cliente;
     }
     
-    public void ingresar (Persona C){
+    public void ocupar (Persona C){
         cliente = C;
         ocupada = true;
     }
+    
+    public void aumentarCosto(int unCosto){
+        costo = costo + unCosto;
+    }
+    
+    
 
     @Override
-    public String toString() {
+    public String toString() {       
         if(ocupada == true)
-            return "Ocupada " + cliente.toString() + '}';
+            return " $"+ getCosto() +" Ocupada " + cliente.toString() + '}';
         else
             return "Libre"  + '}';
     }   
