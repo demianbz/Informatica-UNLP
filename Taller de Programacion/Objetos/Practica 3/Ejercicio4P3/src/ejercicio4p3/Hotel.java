@@ -1,53 +1,48 @@
 package ejercicio4p3;
 
+import PaqueteLectura.GeneradorAleatorio;
+
 public class Hotel {
     
     private Habitacion [] habitacion;
-    private int dimL;
+
     private int dimF;
     
-    public Hotel (){
-        habitacion = new Habitacion[dimF];
-        dimL = 0;
-    }
+  
     
     public Hotel (int N){
         habitacion = new Habitacion[N];
-        dimL = 0;
+        dimF = N;
+        for (int i=0; i<N;i++){
+            int costo = GeneradorAleatorio.generarInt(6000)+2000;
+            habitacion[i] = new Habitacion(costo);
+        }
     }
 
-    public void setDimF(int dimF) {
-        this.dimF = dimF;
-    }
-    
-    public boolean estadoHabitacion(){
-        return habitacion[dimL].isOcupada();
-    }
-    
-    public void ingresarCliente(int X ,Persona unCliente){
-        habitacion[X] = new Habitacion(unCliente);
-        dimL++;
 
+    
+    public void ingresarCliente(int X ,Persona unCliente){ //X=1..N
+        habitacion[X].ocupar(unCliente); //voy a la X-1 porque mi vector va de 0..N-1 y X es 1..N
+       
     }
     
     public void aumentarPrecio (int unCosto){
         int i;
-        for (i=0 ; i<dimL ; i++){
-            int costoActual = habitacion[i].getCosto();
-            habitacion[i].setCosto(costoActual+unCosto);    
+        for (i=0 ; i<dimF ; i++){
+           
+            habitacion[i].aumentarCosto(unCosto);    
         }
     }
 
     @Override
     public String toString() {
-        if(dimL>0){
-            for (int i=0 ; i<=dimL ; i++){
-                return "Habitacion: " + (i+1) + " Costo, $" + habitacion[i].getCosto() +" "+ habitacion[i].toString() +'}';
+        String aux="";
+            for (int i=0 ; i<dimF ; i++){
+               aux = aux + "Habitacion: " + (i+1) + habitacion[i].toString() + "\n";
             }
-        }
-        else
-            return null;
-        return null;
+      
+            return aux;
+
     }
     
     
