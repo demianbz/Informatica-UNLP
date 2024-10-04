@@ -100,11 +100,11 @@ public class Estacionamiento {
     
     @Override
     public String toString(){
-        String aux = " ";
+        String aux = "";
         int i,j;
         for(i=0 ; i<cantPiso ; i++){
             for(j=0 ; j<cantPlaza ; j++){
-                aux = "Piso "+ (i+1) +" Plaza "+ (j+1);
+                aux = aux +"Piso "+ (i+1) +" Plaza "+ (j+1);
                 if(matriz[i][j] != null)
                     aux = aux + matriz[i][j].toString();
                 else
