@@ -30,7 +30,7 @@ public class Auto {
     @Override
     public String toString(){
         String aux = " ";
-        aux = "Nombre del dueño: "+ getNombreDueño() +" Patente: "+ getPatente();
+        aux = " Nombre del dueño: "+ getNombreDueño() +" Patente: "+ getPatente()+" \n";
         return aux;
     }
     

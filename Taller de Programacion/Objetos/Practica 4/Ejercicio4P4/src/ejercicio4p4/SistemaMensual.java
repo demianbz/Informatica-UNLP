@@ -10,16 +10,16 @@ public class SistemaMensual extends Sistema{
     }
     
     public String retornarPromMensual (){ // (el promedio del mes M se calcula con los datos de todos los años en ese mes).
-        String aux = " ";
+        String aux = "";
         double cant = 0 , promedio=0;
         for (int j=0 ; j<12 ; j++){
             cant=0;
-            aux = "-"+ meses[j] +": ";
+            aux = aux +"-"+ meses[j] +": ";
             for(int i=0 ; i<getCantAnios() ; i++ ){
                 cant = cant + obtenerTemp(i+getAnioInicial(),j+1);
             }
             promedio = (cant/getCantAnios());
-            aux = aux + promedio +" °C";
+            aux = aux + promedio +" °C \n";
         }
         return aux;
     }

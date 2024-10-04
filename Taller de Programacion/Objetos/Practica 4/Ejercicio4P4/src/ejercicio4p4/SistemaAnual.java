@@ -7,11 +7,11 @@ public class SistemaAnual extends Sistema{
     }
     
     public String retornarPromAnual (){ //el promedio del año X se calcula con los datos mensuales de ese año
-        String aux = " ";
+        String aux = "";
         double cant = 0, promedio =0;
         for(int i=0 ; i<getCantAnios() ; i++){
             cant=0;
-            aux = "-Anio "+ (i + getAnioInicial()) +": ";
+            aux = aux +"-Anio "+ (i + getAnioInicial()) +": ";
             for(int j=0 ; j<12 ; j++){
                 cant = cant + obtenerTemp(i+getAnioInicial(),j+1);
             }
