@@ -1,0 +1,45 @@
+{Ejercio: Realize un programa donde un robot recorra el perimetro de un 
+rectangulo de un tamaño 5(alto) x 3(ancho) juntando flores en todas las esquinas.
+Al finalizar el robot debe informar las flores juntadas. Inicialmente el robot se encuentra en la esquina(2,2).
+Debe modularizar el rectangulo. El rectangulo debe recibir alto y ancho y devolver las flores}
+programa Rectangulos
+procesos 
+  proceso juntar (ES flor:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flor:= flor + 1
+  fin
+  
+  proceso rectangulo (E alto:numero ; E ancho:numero ; ES flores:numero) 
+  comenzar
+    flores:=0
+    repetir 2
+      repetir alto
+        juntar(flores)
+        mover
+      derecha
+      repetir ancho
+        juntar(flores)
+        mover
+      derecha
+  fin
+  
+areas 
+  ciudad: AreaC(1,1,100,100)
+    
+robots 
+  robot tipo1
+  variables
+    f:numero
+  comenzar
+    rectangulo(5,3,f)
+    Informar(f)
+  fin
+
+variables
+  robot1: tipo1
+comenzar
+  AsignarArea(robot1,ciudad)
+  Iniciar(robot1,2,2)
+fin
