@@ -35,8 +35,8 @@ robots
     flores:=0
     RecibirMensaje(quien,fiscal)
     recorrerAvenida(flores)
-    EnviarMensaje(flores,fiscal)
     EnviarMensaje(quien,fiscal)
+    EnviarMensaje(flores,fiscal)
   fin
    
   robot fiscalizador
@@ -47,6 +47,7 @@ robots
     rmax:numero
   comenzar
     maxF:=0
+    {Enviar quien soy}
     EnviarMensaje(1,r1)
     EnviarMensaje(2,r2)
     EnviarMensaje(3,r3)
@@ -54,24 +55,23 @@ robots
     EnviarMensaje(5,r5)
     EnviarMensaje(6,r6)
     repetir 6
-      RecibirMensaje(flores,*)
       RecibirMensaje(quien,*)
       si(quien=1)
-        RecibirMensaje(rmax,r1)
+        RecibirMensaje(flores,r1)
       sino
         si(quien=2)
-          RecibirMensaje(rmax,r2)
+          RecibirMensaje(flores,r2)
         sino
           si(quien=3)
-            RecibirMensaje(rmax,r3)
+            RecibirMensaje(flores,r3)
           sino
             si(quien=4)
-              RecibirMensaje(rmax,r4)
+              RecibirMensaje(flores,r4)
             sino
               si(quien=5)
-                RecibirMensaje(rmax,r5)
+                RecibirMensaje(flores,r5)
               sino
-                RecibirMensaje(rmax,r6)
+                RecibirMensaje(flores,r6)
       si(maxF<flores)
         maxF:=flores
         rmax:=quien
