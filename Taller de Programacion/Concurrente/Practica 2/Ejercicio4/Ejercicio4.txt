@@ -1,0 +1,89 @@
+{4. Realice un programa en el que un robot fiscalizador controla el acceso de 4 robots recolectores al cuadrante encerrado entre las esquinas (25,25) y (75,75) . Para ello, el robot fiscalizador avisa a un robot recolector aleatorio que puede ingresar al área. El robot que recibe la autorización de acceso calcula una esquina aleatoria dentro del área, limpia dicha esquina de flores y papeles, regresa a su esquina y avisa al robot fiscalizador que ya finalizó.                                                                                Se realizarán en total 10 accesos al cuadrante entre los 4 robots recolectores. Al finalizar, el robot fiscalizador deberá indicar al robot ganador que se posicione en la esquina (50,50).                                                                           El robot fiscalizador inicia en la esquina (1,1) y los robots recolectores inician en las esquinas (25,1) (30,1) (35,1) y (40,1) respectivamente.}
+
+programa ejercicio4
+
+procesos
+  proceso limpiarEsquina (ES flores:numero ; ES papeles:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      flores:= flores + 1
+    mientras HayPapelEnLaEsquina
+      papeles:= papeles + 1
+  fin
+
+areas
+  cuadrante: AreaPC(25,25,75,75)
+  areaFiscal: AreaP(1,1,1,1)
+  Inicio1: AreaP(25,1,25,1)
+  Inicio2: AreaP(30,1,30,1)
+  Inicio3: AreaP(35,1,35,1)
+  Inicio4: AreaP(40,1,40,1)
+
+robots
+  robot recolector
+  variables
+    flores:numero
+    papeles:numero
+    Termine:boolean
+    avenida:numero
+    calle:numero
+  comenzar
+    flores:=0
+    papeles:=0
+    RecibirMensaje(Termine,rf)
+    si(Termine = V)
+      Random(avenida,25,75)
+      Random(calle,25,75)
+      Pos(avenida,calle)
+      limpiarEsquina(flores,papeles)
+      EnviarMensaje(Termine,rf)
+  fin
+  
+  robot fiscalizador
+  variables
+    flores:numero
+    papeles:numero
+    rAleatorio:numero
+    Inicia:boolean
+  comenzar
+    Inicia:=V
+    repetir 10
+      Random(rAleatorio,1,4)
+      si(rAleatorio = 1)
+        EnviarMensaje(Inicia,r1)
+        RecibirMensaje(Inicia,r1)
+      sino
+        si(rAleatorio = 2)
+          EnviarMensaje(Inicia,r2)
+          RecibirMensaje(Inicia,r2)
+        sino
+          si(rAleatorio = 3)
+            EnviarMensaje(Inicia,r3)
+            RecibirMensaje(Inicia,r3)
+          sino
+            EnviarMensaje(Inicia,r4)
+            RecibirMensaje(Inicia,r4)
+  fin
+    
+variables
+  r1:recolector
+  r2:recolector
+  r3:recolector
+  r4:recolector
+  rf:fiscalizador
+comenzar
+  AsignarArea(r1,cuadrante)
+  AsignarArea(r1,Inicio1)
+  AsignarArea(r2,cuadrante)
+  AsignarArea(r2,Inicio2)
+  AsignarArea(r3,cuadrante)
+  AsignarArea(r3,Inicio3)
+  AsignarArea(r4,cuadrante)
+  AsignarArea(r4,Inicio4)
+  AsignarArea(rf,areaFiscal)
+  Iniciar(r1,25,1)
+  Iniciar(r2,30,1)
+  Iniciar(r3,35,1)
+  Iniciar(r4,40,1)
+  Iniciar(rf,1,1)
+fin
