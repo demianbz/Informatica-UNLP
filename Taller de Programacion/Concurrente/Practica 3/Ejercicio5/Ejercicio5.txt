@@ -1,0 +1,106 @@
+programa ejercicio5
+procesos
+  proceso avanzar(ES HayPapel:boolean ; E Av:numero ; E Ca:numero)
+  comenzar
+    BloquearEsquina(11,11)
+    Pos(11,11)
+    si(HayPapelEnLaEsquina)
+      tomarPapel
+    sino
+      HayPapel:=F
+    Pos(Av,Ca)
+    LiberarEsquina(11,11)
+    si (HayPapel)
+      depositarPapel
+    mover
+  fin
+  
+  proceso EnviarID
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+  fin
+
+areas
+  areaR1: AreaP(4,1,4,100)
+  areaR2: AreaP(6,1,6,100)
+  areaR3: AreaP(8,1,8,100)
+  areaR4: AreaP(10,1,10,100)
+  areaCR: AreaP(12,11,12,11)
+  fuente: AreaPC(11,11,11,11)
+
+robots
+  robot tipo1
+  variables
+    HayPapel:boolean
+    AvIni:numero
+    CaIni:numero
+    quienSoy:numero
+    calle:numero
+  comenzar
+    RecibirMensaje(quienSoy,cr)
+    HayPapel:=V
+    AvIni:=PosAv
+    CaIni:=PosCa
+    calle:=1
+    mientras (HayPapel)
+      avanzar(HayPapel,AvIni,CaIni)
+      calle:=calle+1
+      CaIni:=CaIni+1
+      si(calle=100)
+        HayPapel:=F
+    EnviarMensaje(quienSoy,cr)
+    EnviarMensaje(calle,cr)
+  fin
+  
+  robot coordinador
+  variables
+    id:numero
+    cant:numero
+    max:numero
+    rmax:numero
+  comenzar
+    EnviarID
+    max:=0
+    repetir 4
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(cant,r1)
+      sino
+        si(id=2)
+          RecibirMensaje(cant,r2)
+        sino
+          si(id=3)
+            RecibirMensaje(cant,r3)
+          sino
+            RecibirMensaje(cant,r4)
+      si(cant>max)
+        max:=cant
+        rmax:=id
+    Informar('Robot q llego mas lejos R',rmax)
+  fin
+
+variables
+  r1:tipo1
+  r2:tipo1
+  r3:tipo1
+  r4:tipo1
+  cr:coordinador
+comenzar
+  AsignarArea(r1,areaR1)
+  AsignarArea(r1,fuente)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r2,fuente)
+  AsignarArea(r3,areaR3)
+  AsignarArea(r3,fuente)
+  AsignarArea(r4,areaR4)
+  AsignarArea(r4,fuente)
+  AsignarArea(cr,areaCR)
+  Iniciar(r1,4,1)
+  Iniciar(r2,6,1)
+  Iniciar(r3,8,1)
+  Iniciar(r4,10,1)
+  Iniciar(cr,12,11)
+fin
