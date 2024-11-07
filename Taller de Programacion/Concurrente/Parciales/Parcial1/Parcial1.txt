@@ -1,0 +1,115 @@
+programa parcial1
+procesos
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores:=flores+1
+  fin
+  
+  proceso depositarDeAUna(E flores:numero)
+  variables
+    AvIni,CaIni:numero
+  comenzar
+    AvIni:=PosAv
+    CaIni:=PosCa
+    repetir flores
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      depositarFlor
+      Pos(AvIni,CaIni)
+      LiberarEsquina(50,50)
+  fin
+  
+  proceso EnviarID
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+  
+  proceso cuadrado (E tamañoCuadrado:numero ; ES flores:numero)
+  comenzar
+    repetir 4
+      repetir tamañoCuadrado
+        mover
+        juntarFlores(flores)
+      juntarFlores(flores)
+      derecha      
+  fin
+  
+  proceso barrera(E id:numero)
+  variables
+    seguir:boolean
+  comenzar
+    si(id=1)
+      EnviarMensaje(V,r2)
+      EnviarMensaje(V,r3)
+      RecibirMensaje(seguir,*)
+      RecibirMensaje(seguir,*)
+    sino
+      si(id=2)
+        EnviarMensaje(V,r1)
+        EnviarMensaje(V,r3)
+        RecibirMensaje(seguir,*)
+        RecibirMensaje(seguir,*)
+      sino
+        EnviarMensaje(V,r1)
+        EnviarMensaje(V,r2)
+        RecibirMensaje(seguir,*)
+        RecibirMensaje(seguir,*)     
+  fin
+
+areas
+  areaR1: AreaP(1,1,6,30)
+  areaR2: AreaP(8,1,13,30)
+  areaR3: AreaP(15,1,20,30)
+  area50: AreaPC(50,50,50,50)
+  areaCR: AreaP(51,1,51,1)
+  
+robots
+  robot florero
+  variables
+    id:numero
+    flores:numero
+    tam:numero
+    Av,Ca:numero
+  comenzar
+    RecibirMensaje(id,cr)
+    juntarFlores(flores)
+    Random(tam,1,5)
+    cuadrado(tam,flores)
+    barrera(id)      
+    repetir 4
+      barrera(id)  
+      Ca:=PosCa
+      Av:=PosAv
+      Pos(Av,Ca+tam+1)
+      Random(tam,1,5)      
+      cuadrado(tam,flores)
+    depositarDeAUna(flores)
+  fin
+  
+  robot coordinador
+  variables
+    id:numero
+  comenzar
+    EnviarID
+  fin
+
+variables
+  r1,r2,r3:florero
+  cr:coordinador
+comenzar
+  AsignarArea(r1,areaR1)
+  AsignarArea(r1,area50)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r2,area50)
+  AsignarArea(r3,areaR3)
+  AsignarArea(r3,area50)
+  AsignarArea(cr,areaCR)
+  Iniciar(r1,1,1)
+  Iniciar(r2,8,1)
+  Iniciar(r3,15,1)
+  Iniciar(cr,51,1)
+fin
