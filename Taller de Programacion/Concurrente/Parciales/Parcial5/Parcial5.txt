@@ -1,0 +1,184 @@
+programa parcial5
+procesos
+  proceso vaciarBolsa
+  comenzar
+    mientras HayFlorEnLaBolsa
+      depositarFlor
+    mientras HayPapelEnLaBolsa
+      depositarPapel
+  fin
+  
+  proceso juntarPapel(ES papeles:numero)
+  comenzar
+    si(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles+1
+  fin
+
+  proceso juntarFlor(ES flores:numero)
+  comenzar
+    si(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+  
+  proceso depositarFlores(E flores:numero)
+  variables
+    AvIni,CaIni:numero 
+  comenzar
+    AvIni:=PosAv
+    CaIni:=PosCa
+    repetir flores
+      BloquearEsquina(1,6)
+      Pos(1,6)
+      depositarFlor
+      Pos(AvIni,CaIni)
+      LiberarEsquina(1,6)
+  fin
+  
+  proceso depositarPapeles(E papeles:numero)
+  variables
+    AvIni,CaIni:numero 
+  comenzar
+    AvIni:=PosAv
+    CaIni:=PosCa
+    repetir papeles
+      BloquearEsquina(1,6)
+      Pos(1,6)
+      depositarPapel
+      Pos(AvIni,CaIni)
+      LiberarEsquina(1,6)
+  fin
+  
+  proceso iniciar
+  comenzar
+    EnviarMensaje(V,r1)
+    EnviarMensaje(V,r2)
+    EnviarMensaje(V,r3)
+    EnviarMensaje(V,r4)
+  fin
+  
+  proceso EnviarID
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+  fin
+  
+  proceso MandarFinalistas(E f1:numero ; E f2:numero)
+  comenzar
+    EnviarMensaje(f1,r1)
+    EnviarMensaje(f1,r2)
+    EnviarMensaje(f1,r3)
+    EnviarMensaje(f1,r4)
+    EnviarMensaje(f2,r1)
+    EnviarMensaje(f2,r2)
+    EnviarMensaje(f2,r3)
+    EnviarMensaje(f2,r4)
+  fin
+   
+  
+
+areas
+  areaR1: AreaP(1,1,20,1)
+  areaR2: AreaP(1,2,20,2)
+  areaR3: AreaP(1,3,20,3)
+  areaR4: AreaP(1,4,20,4)
+  areaFS: AreaP(1,5,1,5)
+  esquina6: AreaPC(1,6,1,6)
+
+robots
+  robot corredor
+  variables
+    id:numero
+    inicio:boolean
+    AvIni,CaIni:numero
+    flores:numero
+    papeles:numero
+    f1,f2:numero
+    soyFinalista:boolean
+    finCarrera:boolean
+  comenzar
+    RecibirMensaje(id,fs)
+    AvIni:=PosAv
+    CaIni:=PosCa
+    flores:=0
+    papeles:=0
+    vaciarBolsa
+    derecha
+    mover
+    EnviarMensaje(V,fs)
+    RecibirMensaje(inicio,fs)
+    repetir 18
+      juntarFlor(flores)
+      mover
+    juntarFlor(flores)
+    depositarFlores(flores)
+    EnviarMensaje(id,fs)
+    RecibirMensaje(f1,fs)
+    RecibirMensaje(f2,fs)
+    si(f1=id)
+      soyFinalista:=V
+    sino
+      si(f2=id)
+        soyFinalista:=V
+      sino
+        soyFinalista:=F
+    si(soyFinalista)   
+      repetir 2
+        derecha
+      repetir 18
+        juntarPapel(papeles)
+        mover
+      juntarPapel(papeles)
+      depositarPapeles(papeles)
+      EnviarMensaje(id,fs)
+    RecibirMensaje(finCarrera,fs)
+    Pos(AvIni,CaIni)
+  fin
+  
+  robot fiscalizador
+  variables
+    inicio:boolean
+    id:numero
+    finalista1,finalista2:numero
+    ganador:numero
+  comenzar
+    EnviarID
+    repetir 4
+      RecibirMensaje(inicio,*)
+    iniciar
+    RecibirMensaje(id,*)
+    finalista1:=id
+    RecibirMensaje(id,*)
+    finalista2:=id
+    repetir 2
+      RecibirMensaje(id,*)
+    MandarFinalistas(finalista1,finalista2)
+    RecibirMensaje(id,*)
+    ganador:=id
+    RecibirMensaje(id,*)
+    iniciar
+    Informar('Robot Ganador R',ganador)
+  fin
+
+variables
+  r1,r2,r3,r4:corredor
+  fs:fiscalizador
+comenzar
+  AsignarArea(r1,areaR1)
+  AsignarArea(r1,esquina6)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r2,esquina6)
+  AsignarArea(r3,areaR3)
+  AsignarArea(r3,esquina6)
+  AsignarArea(r4,areaR4)
+  AsignarArea(r4,esquina6)  
+  AsignarArea(fs,areaFS)  
+  Iniciar(r1,1,1)
+  Iniciar(r2,1,2)
+  Iniciar(r3,1,3)
+  Iniciar(r4,1,4)
+  Iniciar(fs,1,5)
+fin
