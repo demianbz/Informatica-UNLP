@@ -1,5 +1,5 @@
 program ejercicio3P1;
-
+type
 
 
 
@@ -12,9 +12,3 @@ program ejercicio3P1;
 
 
 //Programa Principal
-
-var
-	num:integer;
-begin
-
-end.
