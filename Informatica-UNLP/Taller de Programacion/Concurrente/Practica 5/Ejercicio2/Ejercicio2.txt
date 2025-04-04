@@ -1,0 +1,125 @@
+{2- Tres robots recolectores deben avanzar por su calle vaciando las esquinas. El avance debe realizarse en conjunto en etapas, siguiendo el modelo de sincronización barrera, en el cual los robots deben esperar que todos terminen su tarea antes de avanzar a la siguiente etapa. Cada etapa consiste en recorrer 10 esquinas y luego depositar todas las flores recolectadas en la esquina (50,50). Una vez que los robots recolectores completaron toda su calle, un robot fiscalizador deberá juntar todas las flores de la esquina (50,50) e informar la cantidad total de flores juntadas. Los robots recolectores inician en las esquinas (1,1), (1,2) y (1,3) respectivamente. El robot fiscalizador inicia en la esquina (1,4).}
+
+programa ejercicio1
+procesos
+  proceso juntarFlores
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+  fin
+  
+  proceso depositarFlores
+  variables
+    AvIni,CaIni:numero
+  comenzar
+    AvIni:=PosAv
+    CaIni:=PosCa
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    mientras HayFlorEnLaBolsa
+      depositarFlor
+    Pos(AvIni,CaIni)
+    LiberarEsquina(50,50)
+  fin
+  
+  proceso EnviarID
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+
+areas
+  area50: AreaC(50,50,50,50)
+  areaR1: AreaP(1,1,100,1)
+  areaR2: AreaP(1,2,100,2)
+  areaR3: AreaP(1,3,100,3)
+  areaFS: AreaP(1,4,1,4)
+  
+robots
+  robot recolector
+  variables
+    id:numero
+    seguir:boolean
+  comenzar
+    RecibirMensaje(id,fs)
+    derecha
+    repetir 9
+      juntarFlores
+      mover
+    juntarFlores
+    depositarFlores
+    si(id=1)
+      EnviarMensaje(V,r2)
+      EnviarMensaje(V,r3)
+      RecibirMensaje(seguir,*)
+      RecibirMensaje(seguir,*)
+    sino
+      si(id=2)
+        EnviarMensaje(V,r1)
+        EnviarMensaje(V,r3)
+        RecibirMensaje(seguir,*)
+        RecibirMensaje(seguir,*)
+      sino
+        EnviarMensaje(V,r1)
+        EnviarMensaje(V,r2)
+        RecibirMensaje(seguir,*)
+        RecibirMensaje(seguir,*)
+    repetir 9
+      repetir 10
+        juntarFlores
+        mover
+      juntarFlores
+      depositarFlores
+      si(id=1)
+        EnviarMensaje(V,r2)
+        EnviarMensaje(V,r3)
+        RecibirMensaje(seguir,*)
+        RecibirMensaje(seguir,*)
+      sino
+        si(id=2)
+          EnviarMensaje(V,r1)
+          EnviarMensaje(V,r3)
+          RecibirMensaje(seguir,*)
+          RecibirMensaje(seguir,*)
+        sino
+          EnviarMensaje(V,r1)
+          EnviarMensaje(V,r2)
+          RecibirMensaje(seguir,*)
+          RecibirMensaje(seguir,*)
+    EnviarMensaje(V,fs)
+  fin
+  
+  robot fiscalizador
+  variables
+    id:numero
+    termino:boolean
+    flores:numero
+  comenzar
+    EnviarID
+    repetir 3
+      RecibirMensaje(termino,*)
+    Pos(50,50)
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores:=flores+1
+    Informar('La Cant de flores fueron',flores)
+  fin
+
+variables
+  r1,r2,r3:recolector
+  fs:fiscalizador
+comenzar
+  AsignarArea(r1,areaR1)
+  AsignarArea(r1,area50)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r2,area50)
+  AsignarArea(r3,areaR3)
+  AsignarArea(r3,area50)
+  AsignarArea(fs,areaFS)
+  AsignarArea(fs,area50)
+  Iniciar(r1,1,1)
+  Iniciar(r2,1,2)
+  Iniciar(r3,1,3)
+  Iniciar(fs,1,4)
+fin

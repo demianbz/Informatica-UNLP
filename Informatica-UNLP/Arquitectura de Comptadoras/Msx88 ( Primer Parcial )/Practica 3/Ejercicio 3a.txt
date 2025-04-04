@@ -1,0 +1,24 @@
+;a) * Escribir un programa que imprime “INGENIERIA E INFORMATICA” en la impresora a
+;través del HAND-SHAKE. 
+;La comunicación se establece por consulta de estado (polling). 
+
+DATO EQU 40H
+ESTADO EQU 41H
+
+ORG 1000H
+  CADENA DB "INGENIERIA E INFORMATICA"
+  FIN DB ?
+  
+ORG 2000H
+  MOV BX, OFFSET CADENA
+  MOV CL, OFFSET FIN - OFFSET CADENA
+  CONSULTA: IN AL,ESTADO
+            AND AL,1
+            JNZ CONSULTA
+  MOV AL,[BX]
+  OUT DATO,AL
+  INC BX
+  DEC CL
+  JNZ CONSULTA
+INT 0
+END

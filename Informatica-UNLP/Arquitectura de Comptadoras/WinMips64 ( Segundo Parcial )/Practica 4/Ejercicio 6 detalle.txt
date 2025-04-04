@@ -1,0 +1,38 @@
+;6) Escribir un programa que lea tres números enteros A, B y C de la memoria de datos y determine cuántos de ellos son iguales 
+;   entre sí (0, 2 o 3). El resultado debe quedar almacenado en la dirección de memoria D. 
+
+.data
+	A: .word 2
+	B: .word 5
+	C: .word 2
+	D: .word 0
+
+.code
+;Cargo los valores A, B y C en r1,r2,r3 
+	ld r1, A(r0)
+	ld r2, B(r0)
+	ld r3, C(r0)
+	
+;Inicializo el resultado en 0
+	dadd r4,r0,r0
+	
+;Comparar A y B
+	beq r1,r2,IGUALES
+	
+;Si no son iguales comparo A y C
+	beq r1,r3 IGUALES ; Si son iguales salto a IGUALES
+	bne r1,r3 DESIGUALES ; Si no son iguales comparo B y C
+	
+IGUALES: dadd r4,r4,1 ; si son iguales sumo 1 a r4
+
+;Comparo B y C 
+DESIGUALES:	beq r2,r3 IGUALES_2 ; si son iguales salto a iguales_2
+			bne r2,r3 fin ; si no son iguales salto a fin
+
+IGUALES_2: dadd r4,r4,1 ; si son iguales sumo 1 a r4
+		 
+;cargo el valor en D 
+fin: sd r4, D(r0)
+
+	
+halt

@@ -1,0 +1,17 @@
+;Calcular MAX entre A y B, Guardar en C
+
+.data
+	A: .double 4.5
+	B: .double 3.2
+	C: .double 0
+
+.code
+	l.d f1,A(r0)
+	l.d f2,B(r0)
+	c.lt.d f1,f2
+	bc1t Bmayor
+	;A es mayor
+	s.d f1,C(r0)
+	j fin
+Bmayor: s.d f2,C(r0)
+fin: halt

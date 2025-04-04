@@ -1,0 +1,118 @@
+{* Una empresa importadora de microprocesadores desea implementar un sistema de software para analizar la
+información de los productos que mantiene actualmente en stock. Para ello, se conoce la siguiente información de
+los microprocesadores: marca (Intel, AMD, NVidia, etc), línea (Xeon, Core i7, Opteron, Atom, Centrino, etc.),
+cantidad de cores o núcleos de procesamiento (1, 2, 4, 8), velocidad del reloj (medida en Ghz) y tamaño en
+nanómetros (nm) de los transistores (14, 22, 32, 45, etc.). La información de los microprocesadores se lee de
+forma consecutiva por marca de procesador y la lectura finaliza al ingresar un procesador con 0 cores (que no
+debe procesarse). Se pide implementar un programa que lea información de los microprocesadores de la empresa
+importadora e informe:
+● Marca y línea de todos los procesadores de más de 2 cores con transistores de a lo sumo 22 nm.
+● Las dos marcas con mayor cantidad de procesadores con transistores de 14 nm.
+● Cantidad de procesadores multicore (de más de un core) de Intel o AMD, cuyos relojes alcancen velocidades de
+al menos 2 Ghz.}
+
+program ej6_3;
+
+
+type 
+
+microprocesador = record
+
+	marca,linea:string;
+	cores: integer;
+	velocidad,tamano: real;
+end;
+
+
+procedure leer(var m: microprocesador);
+begin
+	writeln('ingrese la marca');
+	readln(m.marca);
+	writeln('ingrese la linea');
+	readln(m.linea);
+	writeln('ingrese los cores');
+	readln(m.cores);
+	writeln('ingrese la velocidad');
+	readln(m.velocidad);
+	writeln('ingrese el tamaño');
+	readln(m.tamano);
+end;
+
+
+procedure actualizarMaximos(canMicros: integer; marca:string; var marcamax1,marcamax2: string; var cantMax1;cantMax2:integer);
+begin
+	if(canMicros > cantMax1) then
+	begin
+		cantMax2:=cantMax1;
+		cantMax1 := canMicros;
+		marcamax2:= marcamax1;
+		marcamax1 := marca;
+	
+	end
+	else begin
+		if(canMicros > cantMax2) then begin
+			cantMax2:= canMicros;
+			marcamax2 := marca;
+		end;
+	end;
+end;
+function cumple2cy22nm(transitores:real;cores:integer):boolean;
+begin
+	cumple2cy22nm:=((transitores>=22)and(cores>2))
+end;
+function pmulticore(cores:integer;marca:string;velocidad:real):boolean;
+var
+	ok:boolean;
+begin
+	if((marca='Intel')or(marca='AMD'))then
+	begin
+		if((cores>1)and(velocidad>=2))then
+			ok:=true
+		else
+			ok:=false;
+	end;
+	pmulticore:=ok
+end;
+procedure ingresarYprocesarDAtos(var marcamax1,marcamax2: string ; var cantP: integer);
+var	
+	cantMax1,cantMax2:string;
+	m:microprocesador;
+	marca_acutal:string;
+	cantPPMarca:integer;
+begin
+
+	cantMax1:= -1;
+	cantMax2:=-1;
+	cantP:=0;
+	leer(m);
+	while (m.cores <> 0 ) do
+	begin
+		marca_actual:= m.marca;
+		cantPPMarca:=0;
+		while ((m.cores <> 0)and (marca_actual = m.marca)) do begin
+			if (cumple2cy22nm(m.tamano, m.cores)=true)then
+				writeln('la marca: ',marca_actual,' y la linea: ',m.linea,' tiene mas de dos procesadores y a lo sumo 22nm');
+			if(m.tamano > 14) then
+				cantPPMarca := cantPPMarca +1;
+			if(pmulticore(m.cores,m.marca,m.velocidad)=true)then
+				cantP:= cantP +1;
+			leer(m);
+		
+		end;
+		actualizarMaximos(cantPPmarca, marcaActual, marcamax1,marcamax2, cantMax1;cantMax2);
+	
+	end;
+end
+
+
+
+var
+
+marcamax1,marcamax2:string;
+cantP;integer;
+begin
+
+ingresarYprocesarDAtos(marcaMax1,marcaMax2,cantP);
+writeln('la dos marcas con mayor cantidad de procesadores con transitores de 14 nm fueron: ',marcamax1, marcamax2);
+
+end.

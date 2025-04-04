@@ -1,0 +1,38 @@
+program P1E7;
+
+var
+  nombre,nombremax1,nombremax2 : String;
+  tiempo, max1, max2: real;
+  i: integer;
+beginp
+
+  max1:=-1; max2:=-1; {inicializo los maximos}
+  nombremax1 := 'vacio';
+  nombremax2 := 'vacio';
+
+  for i:=1 to 5 do begin // 100
+
+    writeln('Ingrese el nombre : ' );
+    readln(nombre);
+    writeln('Ingrese el tiempo : ' );
+    readln(tiempo);
+
+    if (tiempo > max1) then begin {evalúo máximo 1}
+      max2:=max1;
+      nombremax2:=nombremax1;
+      max1:=tiempo;
+      nombremax1:=nombre;
+    end
+    else
+      if (tiempo > max2) then begin {evalúa máximo 2}
+        max2:=tiempo;
+        nombremax2:=nombre;
+      end;
+  end;
+
+
+  writeln('Nombre 1 mas tiempo: ', nombremax1 , ' tiempo : ' ,max1:1:2  );
+  writeln('Nombre 2 mas tiempo: ', nombremax2, ' tiempo : ' ,max2:1:2);
+  readln();
+e
+nd.

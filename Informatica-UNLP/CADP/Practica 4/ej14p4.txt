@@ -1,0 +1,88 @@
+program P4Ej14;
+const
+    roles=5;
+    cantProyectos = 1000;
+    corte= -1;
+type
+    str50 = string[50];
+    subrangoRoles= 1..roles;
+    vectorRoles= array[subrangoRoles] of real;
+    
+    desarrollador= record
+        pais: str50;
+        codigo: integer;
+        nombreProyecto: string;
+        rol: subrangoRoles;
+        cantHoras: integer;
+   end;
+   vectorMontos= array[1..cantProyectos] of real;
+   vectorArquitectos= array[1..cantProyectos] of integer;
+// devuelve el monto por cada rol
+// procedure cargarVectorRoles(var vr: vectorRoles);
+procedure leer(var d:desarrollador);
+begin
+    readln(d.pais);
+    readln(d.codigo);
+    readln(d.nombreProyecto);
+    readln(d.rol);
+    readln(d.cantHoras);
+end;
+procedure inicializarVectores(var vm:vectorMontos; var va:vectorArquitectos);
+var i : integer;
+begin
+    for i := 1 to cantProyectos do begin
+        vm[i] := 0;
+        va[i] := 0; 
+    end;
+end;
+procedure cargarDatos(var vm:vectorMontos; var va:vectorArquitectos; 
+                      var cantArg: integer; var admins: integer; vRoles:vectorRoles );
+var 
+    dev:desarrollador;
+begin
+    cantArg := 0;
+    admins := 0;
+    leer(dev);
+    while(dev.codigo <> corte) do
+    begin
+        if(dev.pais = 'Argentina') then cantArg := cantArg + 1;
+        if(dev.rol = 3) then 
+          admins := admins + dev.cantHoras
+        else 
+          if(dev.rol = 4) then va[dev.codigo] := va[dev.codigo] + 1;
+          
+        vm[dev.codigo] := vm[dev.codigo] + (vRoles[dev.rol] * dev.cantHoras);    
+    end;
+end;
+function codigoMenorMonto(vm: vectorMontos): integer;
+var
+    i: integer;
+    cod: integer;
+begin
+    cod := 1;
+    for i := 2 to cantProyectos do
+        if(vm[i] < vm[cod]) then cod := i; 
+    codigoMenorMonto := cod;
+end;
+procedure informar(va: vectorArquitectos);
+var
+    i: integer;
+begin
+    for i := 1 to cantProyectos do
+        writeln( i, ' - ', va[i]);
+end;
+var
+    vecR: vectorRoles;
+    vecMontos: vectorMontos; 
+    vecArq:vectorArquitectos;
+    argentinos, administradores:integer;
+begin
+    cargarVectorRoles(vecR); {se dispone}
+    inicializarVectores(vecMontos,vecArq);
+    cargarDatos(vecMontos, vecArq, argentinos, administradores, vecR);
+    writeln('El monto total invertido en desarrolladores con residencia en Argentina. ',argentinos);
+    writeln('La cantidad total de horas trabajadas por Administradores de bases de datos. ',administradores);
+    writeln('El código del proyecto con menor monto invertido. ', codigoMenorMonto(vecMontos));
+    writeln('La cantidad de Arquitectos de software de cada proyecto. ');
+    informar(vecArq);
+end.

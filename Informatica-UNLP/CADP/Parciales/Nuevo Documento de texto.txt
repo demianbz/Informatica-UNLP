@@ -1,0 +1,83 @@
+{2. Implementar un programa que lea y almacene información de clientes de una empresa aseguradora
+automotriz. De cada cliente se lee código de cliente, DNI, apellido, nombre, código de póliza contratada
+(1..6) y monto básico que abona mensualmente. La lectura finaliza cuando llega el cliente con código
+1122, el cual debe procesarse.
+La empresa dispone de una tabla donde guarda un valor que representa un monto adicional que el
+cliente debe abonar en la liquidación mensual de su seguro, de acuerdo al código de póliza que tiene
+contratada.
+Una vez finalizada la lectura de todos los clientes, se pide
+a. Informar para cada cliente DNI, apellido, nombre y el monto completo que paga mensualmente
+por su seguro automotriz (monto básico + monto adicional).
+b. Informar apellido y nombre de aquellos clientes cuyo DNI contiene al menos dos dígitos 9.
+c. Realizar un módulo que reciba un código de cliente, lo busque (seguro existe) y lo elimine de la
+estructura.}
+program ej2practica_repaso;
+const
+	cant_poliza=6;
+type
+	vector_poliza=array[1..cant_poliza] of integer;
+	
+	poliza=1..cant_poliza;
+	cliente=record
+		cod_clienteinteger;
+		dniinteger;
+		apellidostring;
+		nombrestring;
+		cod_polizapoliza;
+		montoreal;
+	end;
+	lista=^nodo;
+	nodo=record
+		datoscliente;
+		siglista;
+	end;
+function tabla(ccliente;vvector_poliza)integer;
+begin
+	tabla=v[c.cod_poliza];
+end;
+procedure leerregistro(ccliente);
+begin
+	write('ingrese el codigo del cliente ');
+	readln(c.cod_cliente);
+	write('ingrese el DNI del cliente ');
+	readln(c.dni);
+	write('ingrese el apellido ');
+	readln(c.apellido);
+	write('ingrese el nombre ');
+	readln(c.nombre);
+	write('ingrese el codigo de poliza ');
+	readln(c.cod_poliza);
+	write('ingrese el monto ');
+	readln(c.monto);
+end;
+procedure cargarlista(var llista; ccliente);
+var
+	nuelista;
+	auxlista;
+begin
+	new(nue);
+	nue^.datos=c;
+	nue^.sig=nil;
+	if(l=nil)then 
+		l=nue
+	else
+		nue^.sig=l;
+		l=nue;
+end;
+procedure leerlista(var llista; ccliente);
+begin
+	repeat
+		leerregistro(c)
+		cargarlista(l)
+	until(c.cod_cliente=1122);
+end;
+procedure informardatos();
+begin
+	while(lnil)do
+	begin
+	writeln('DNI ',l^.dni);
+	writeln('Apellido ',l^.apellido);
+	writeln('Nombre ',l^.nombre);
+	writeln('Monto Total ',l^.monto
+	
+end;

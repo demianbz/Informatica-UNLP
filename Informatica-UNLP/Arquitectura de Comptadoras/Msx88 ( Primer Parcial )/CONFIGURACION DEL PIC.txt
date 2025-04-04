@@ -1,0 +1,40 @@
+;-Escribir un programa que tenga una subrutina "SALUDAR" , que imprime el 
+;mensaje "Hola" en pantalla, y que cada vez que se apreta la tecla F10, se llama
+;a la subrtina "SALUDAR".
+
+;PIC
+  CONT EQU 10H ; Contador de el TIMER
+  COMP EQU 11H ; Comparador de el TIMER
+  EOI EQU 20H ; Le avisa al PIC que la interrupcion fue atendida
+  IMR EQU 21H ; Para Habilitar/Desabilitar una interrupcion
+  IRR EQU 22H ; Indica cuales dispositivos externos quieren interrumpir
+  ISR EQU 23H ; Indica cual dispositivo externo esta siendo atendido
+  INT0 EQU 24H ; Contiene el ID asignado al F10
+  INT1 EQU 25H ; Contiene el ID asignado al TIMER
+  INT2 EQU 26H ; Contiene el ID asignado al HANDSHAKE
+  INT3 EQU 27H ; Contiene el ID asignado al CDMA
+  
+ORG 1000H
+  MENSAJE DB "Hola"
+  
+ORG 3000H
+  SALUDAR: MOV BX, OFFSET MENSAJE
+           MOV AL, 4
+           INT 7
+           MOV AL,20H
+           OUT EOI,AL
+           IRET
+
+ORG 96
+  DIR_SALUDAR DW 3000h
+
+ORG 2000H
+  ; CONFIGURACION DEL PIC
+  CLI
+  MOV AL, 11111110b ; PARA HABILITAR EL INT0
+  OUT IMR,AL ;IMR = 11111110
+  MOV AL, 24
+  OUT INT0,AL ; ID DE F10 = 24
+  STI
+  LOOP: JMP LOOP
+END

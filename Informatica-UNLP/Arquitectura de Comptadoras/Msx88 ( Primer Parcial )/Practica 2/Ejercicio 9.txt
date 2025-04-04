@@ -1,0 +1,47 @@
+;Escribir un programa que aguarde el ingreso de una clave de cuatro 
+;caracteres por teclado sin visualizarla en pantalla. En caso de 
+;coincidir con una clave predefinida (y guardada en memoria) que muestre 
+;el mensaje "Acceso permitido", caso contrario el mensaje "Acceso denegado". 
+
+ORG 1000H
+  MSJ DB "INGRESE LA CLAVE DE 4 CARACTERES: "
+  FIN_MSJ DB ?
+  
+  CLAVE_PREDEFINIDA DB "1234"
+  CLAVE_INGRESADA DB ?
+   
+ORG 1500H  
+  INCORRECTA DB "Acceso Denegado"
+  FIN_INCORRECTA DB ?
+
+  CORRECTA DB "Acceso Permitido"
+  FIN_CORRECTA DB ?
+  
+ORG 3000H
+  PRINT_MSJ: MOV BX, OFFSET MSJ
+             MOV AL, OFFSET FIN_MSJ - OFFSET MSJ
+             INT 7
+RET
+
+ORG 2000H
+  CALL PRINT_MSJ
+  MOV BX, OFFSET CLAVE_INGRESADA
+  MOV DL, 4 ;CANTIDAD DE CARACTERES A LEER
+  LEER: INT 6
+        INC BX ;PROXIMA POSICION DE MEMORIA
+        DEC DL ; DECREMENTO CANTIDAD DE CARACTERES A LEER
+        JNZ LEER 
+  MOV AL, CLAVE_PREDEFINIDA
+  CMP AL,CLAVE_INGRESADA
+  JZ CLAVE_CORRECTA
+  ; CLAVE INCORRECTA
+  MOV BX, OFFSET INCORRECTA
+  MOV AL, OFFSET FIN_INCORRECTA - OFFSET INCORRECTA
+  INT 7
+  JMP FINAL
+  CLAVE_CORRECTA: MOV BX, OFFSET CORRECTA
+                  MOV AL, OFFSET FIN_CORRECTA -  OFFSET CORRECTA
+                  INT 7
+  
+FINAL:INT 0
+END

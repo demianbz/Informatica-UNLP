@@ -1,0 +1,41 @@
+;Uso de la impresora a traves del HAND_SHAKE, por INTERRUPCION 
+EOI EQU 20H
+IMR EQU 21H
+INT2 EQU 26H
+DATO EQU 40H
+ESTADO EQU 41H
+
+ORG 1000H
+  CADENA DB "Milanesas"
+
+ORG 16 ;(Porque elegi el ID 4, Y 4 x 4 = 16)
+  DIR_IMPRIMIR DW 3000H
+
+ORG 3000H
+  IMPRIMIR: MOV AL,[BX]
+            OUT DATO,AL
+            INC BX
+            DEC CL
+            JNZ VUELVO 
+            ;Desactivar Interrupciones, para que no se imprima mas de lo que queremos
+            MOV AL, 11111111B ; = 0FFH
+            OUT IMR,AL
+     VUELVO:MOV AL,20H
+            OUT EOI,AL
+IRET
+  
+ORG 2000H  
+  CLI
+  MOV AL,11111011B ; = 0FBH ;HAND-SHAKE ACTIVADO
+  OUT IMR,AL
+  MOV AL,4 ;ID QUE ELEGIMOS
+  OUT INT2,AL
+  IN AL, ESTADO
+  OR AL, 10000000B ; = 80H
+  OUT ESTADO,AL
+  MOV BX,OFFSET CADENA
+  MOV CL,9
+  STI
+  LOOP: JMP LOOP
+INT 0
+END

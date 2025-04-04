@@ -1,0 +1,138 @@
+{b-Implemente una variante en la cual los robots luego de tomar cada flor de la esquina (10,10) vuelvan a su esquina inicial, pasen a la esquina (11,11) a depositarla y finalmente vuelvan a la esquina inicial.}
+
+programa ejercicio4
+procesos
+  proceso EnviarID
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+  fin
+
+  proceso juntarFlor (ES flores:numero ; ES seguir:boolean)
+  comenzar
+    si(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+    sino
+      seguir:=F
+  fin
+
+  proceso RecolectarFlores(E total:numero)
+  variables
+    Av:numero
+    Ca:numero
+  comenzar
+    Av:=PosAv
+    Ca:=PosCa
+    Pos(11,11)
+    repetir total
+      tomarFlor
+    Pos(Av,Ca)
+  fin
+  
+  proceso juntarEsq10(ES flores:numero ; E AvIni:numero ; E CaIni:numero ; ES seguir:boolean)
+  comenzar
+    BloquearEsquina(10,10)
+    Pos(10,10)    
+    juntarFlor(flores,seguir)
+    Pos(AvIni,CaIni)
+    LiberarEsquina(10,10)
+  fin
+  
+  proceso depositarEsq11(E AvIni:numero ; E CaIni:numero ; E seguir:boolean)
+  comenzar
+    BloquearEsquina(11,11)
+    Pos(11,11)        
+    si(seguir)
+      depositarFlor
+    Pos(AvIni,CaIni)              
+    LiberarEsquina(11,11)
+  fin
+  
+areas
+  area: AreaPC(10,10,10,10)
+  area2: AreaC(11,11,11,11)
+  inicioR1: AreaP(9,9,9,9)
+  inicioR2: AreaP(9,10,9,10)
+  inicioR3: AreaP(9,11,9,11)
+  inicioR4: AreaP(9,12,9,12)
+  inicioCR: AreaP(1,1,1,1)
+
+robots
+  robot tipo1
+  variables
+    quienSoy:numero
+    flores:numero
+    AvIni:numero
+    CaIni:numero
+    seguir:boolean
+  comenzar
+    RecibirMensaje(quienSoy,cr)
+    flores:=0
+    seguir:=V
+    AvIni:=PosAv
+    CaIni:=PosCa
+    juntarEsq10(flores,AvIni,CaIni,seguir)
+    mientras(seguir)
+      depositarEsq11(AvIni,CaIni,seguir)
+      juntarEsq10(flores,AvIni,CaIni,seguir)
+    EnviarMensaje(quienSoy,cr)
+    EnviarMensaje(flores,cr)
+  fin
+
+  robot coordinador
+  variables
+    id:numero
+    total:numero
+    ultimo:numero
+    f:numero
+  comenzar
+    EnviarID
+    total:=0
+    repetir 4
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(f,r1)
+      sino
+        si(id=2)
+          RecibirMensaje(f,r2)
+        sino
+          si(id=3)
+            RecibirMensaje(f,r3)
+          sino
+            RecibirMensaje(f,r4)
+      ultimo:=id
+      total:=total+f
+    Informar('Robot ultimo R',ultimo)
+    RecolectarFlores(total)
+  fin
+
+variables
+  r1:tipo1
+  r2:tipo1
+  r3:tipo1
+  r4:tipo1
+  cr:coordinador
+comenzar
+  AsignarArea(r1,area)
+  AsignarArea(r1,inicioR1)
+  AsignarArea(r1,area2)
+  AsignarArea(r2,area)
+  AsignarArea(r2,inicioR2)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,area)
+  AsignarArea(r3,inicioR3)
+  AsignarArea(r3,area2)
+  AsignarArea(r4,area)
+  AsignarArea(r4,inicioR4)
+  AsignarArea(r4,area2)
+  AsignarArea(cr,inicioCR)
+  AsignarArea(cr,area2)
+  Iniciar(r1,9,9)
+  Iniciar(r2,9,10)
+  Iniciar(r3,9,11)
+  Iniciar(r4,9,12)
+  Iniciar(cr,1,1)
+fin

@@ -1,0 +1,22 @@
+{7. Realizar un programa que lea el código, el precio actual y el nuevo precio de los productos de un
+almacén. La lectura finaliza al ingresar el producto con el código 32767, el cual debe procesarse.
+Para cada producto leído, el programa deberá indicar si el nuevo precio del producto supera en un
+10% al precio anterior}
+program ejercicio7;
+var
+  codigo: integer;
+  precioActual, nuevoPrecio: real;
+begin
+  repeat 
+  writeln('Ingrese el codigo del producto ');
+  readln(codigo);
+  writeln('Ingrese el precio actual del producto');
+  readln(precioActual);
+  writeln('Ingrese el nuevo precio del producto');
+  readln(nuevoPrecio);
+    if (nuevoPrecio >= precioActual * 1.1) then
+     writeln('El aumento del precio del producto es superior al 10%');
+    if (nuevoPrecio < precioActual * 1.1) then
+    writeln ('El aumento del precio del producto no supera al 10%');
+  until (codigo = 32767);
+end.

@@ -1,0 +1,19 @@
+a) Escribir un programa que dados los valores etiquetados como A, B y C y almacenados en la memoria de datos, 
+calcule A+B-C y guarde el resultado en la memoria con etiqueta D, sin utilizar subrutinas.
+
+ORG 3000h ;SUBRUTINAS
+
+ORG 1000h ;PARAMETROS, Memoria  de datos
+  A DB 5
+  B DB 3
+  C DB 4
+  D DB ?
+ORG 2000h ;PROGRAMA PRINCIPAL
+  MOV AL, A
+  MOV BL, B
+  MOV CL, C
+  ADD AL,BL
+  SUB AL,CL
+  MOV D,AL
+  HLT
+  END

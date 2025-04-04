@@ -1,0 +1,22 @@
+b) Escribir un programa como en a) pero ahora el cálculo y el almacenamiento del resultado debe realizarse en una 
+subrutina llamada calculo, sin recibir ni devolver parámetros, es decir, utilizando A, B, C y D como variables 
+globales. Si bien esta técnica no está recomendada, en ejercicio sirve para ver sus diferencias con el uso de 
+parámetros.
+
+ORG 1000h ;PARAMETROS, Memoria  de datos
+  A DB 5
+  B DB 3
+  C DB 4
+  D DB ?
+ORG 3000h ;SUBRUTINAS
+  SUBRUTINA:  MOV AL, A
+              MOV BL, B
+              MOV CL, C
+              ADD AL,BL
+              SUB AL,CL
+              MOV D,AL
+  RET  
+ORG 2000h ;PROGRAMA PRINCIPAL
+  CALL SUBRUTINA
+  HLT
+  END

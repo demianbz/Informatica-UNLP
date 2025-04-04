@@ -1,0 +1,121 @@
+{Una Empresa de venta de Tickets de tren esta analizando la informacion de
+los viajes realizados por sus trenes durante el año 2022. Para ello, se
+dispone de una estructura de datos con la informacion ed todos los viajes.
+De cada viaje se conoce el codigo de tren, el mes en el que se realizo el viaje
+(entre 1 y 12), la cantidad de pasajeros que viajaron, y el codigo de destino (entre 1 y 20). 
+La informacion se encuentra ordenada por codigo de tren.
+Ademas, la empresa dispone de una estructura de datos con informacion del costo del ticket por ciudad de destino.
+
+Realizar un programa que procese la informacion de los viajes y:
+1. Genere una lista que tenga por cada codigo de tren, la cantidad de viajes realizados.
+2. Informe el mes con mayor monto recaudado.
+3. Informe el promedio de pasajeros por cada tren entre todos sus viajes.}
+
+Program primerafecha;
+type
+	rangoMeses=1..12;
+	rangoCiudades:1..20;
+	viaje=record
+		tren:integer;
+		mes: rangoMeses;
+		pasajeros:integer;
+		destino:rangoCiudades;
+	end;
+
+	listaViajes=^nodoViajes;
+	nodoViajes=record
+		dato:viajes;
+		sig:listaViajes;
+	end;
+	
+	vectorCostos=array[rangoCiudades]of real;
+	
+	infoTren=record
+		tren:integer;
+		cant:integer;
+	end;
+	
+	listaTrenes=^nodoTren;
+	nodoTren=record
+		dato:infoTren;
+		sig:listaTrenes;
+	end;
+	
+	vectorRecaudaciones=array[rangoMeses]of real;
+	
+procedure  cargarLista(L:listaViajes);//SE DISPONE
+procedure cargarVector(V:vectorCostos);//SE DISPONE
+
+procedure inicializarVector(var v:vectorRecaudaciones);
+var
+	i:integer;
+begin
+	for i:= 1 to 12 do begin
+		v[i]:=0;
+	end;
+end;
+
+function maximo(v:vectorRecaudaciones):real;
+var
+	max:real;
+	mesMax:integer;
+begin
+	max:=-1;
+	for i:=1 to 12 do begin
+		if(v[i]>max)then begin
+			max:=v[i];
+			mesMax:=i;
+		end;
+	end;
+	maximo:=mesMax;
+end;
+procedure agregarAdelante(var L2:listaTrenes; t:infoTren);
+var
+	nue:listaTrenes;
+begin
+	new(nue);
+	nue^.dato:=t.tren;
+	nue^.sig:=nil;
+	if(L2=nil)then L2:=nue
+	else begin
+		nue^.sig:=L2;
+		L2:=nue;
+	end;
+end;
+procedure procesarViajes(L:listaViajes, V:vectorCostos, var L2:listaTrenes, V2:vectorRecaudaciones);
+var
+	trenActual,cantViajes,cantPasajeros:integer;  
+	costo:real;
+	t:infoTren;
+begin
+	while(L<>NIL)do begin
+		trenActual:=L^.dato.tren;
+		cantViajes:=0;
+		cantPasajeros:=0;
+		while(L<>NIL)and(trenActual=L^.dato.tren) do begin
+			cantViajes:=cantViajes+1;
+			cantPasajeros:=cantPasajeros+L^.dato.pasajeros;
+			costo:=v[L^.dato.destino]*L^.dato.pasajeros;
+			V2[L^.dato.mes]:=V2[L^.dato.mes]+costo;
+			L:=L^.sig;
+		end;
+		t.tren:=trenActual;
+		t.cant:=cantPasajeros;
+		agregarAdelante(L2,t);//IMPLEMENTAR
+		writeln('El promedio de pasajeros del tren ',trenActual,' es ',cantPasajeros/catViajes);
+	end;
+end;
+var
+	L:ListaViajes;
+	V:vectorCostos;
+	L2:listaTrenes;
+	V2:vectorRecaudaciones
+begin
+	cargarLista(L)//SE DISPONE
+	cargarVector(V)//SE DISPONE
+	L2:=NIL;
+	inicializarVector(recaudaciones);
+	procesarViajes(L,V,L2,V2);
+	writeln('El mes con mayor monto recaudado es:',maximo(recaudaciones)); 
+	
+end.

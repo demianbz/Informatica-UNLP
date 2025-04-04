@@ -1,0 +1,21 @@
+ORG 1000h ;PARAMETROS, Memoria  de datos
+  NUM1 DW 5h
+  NUM2 DW 3h
+  RES DW ?
+ORG 3000h ;SUBRUTINAS
+  MUL:CMP AX,0
+      JZ FIN
+      CMP BX,0
+      JZ FIN
+      LOOP: ADD DX,AX
+            DEC BX
+            JNZ LOOP
+  FIN:RET  
+ORG 2000h ;PROGRAMA PRINCIPAL
+  MOV DX,0
+  MOV AX,NUM1
+  MOV BX,NUM2
+  CALL MUL
+  MOV RES,DX
+  HLT
+  END

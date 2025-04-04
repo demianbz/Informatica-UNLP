@@ -1,0 +1,23 @@
+;Escribir un programa que muestre en pantalla todos los caracteres
+;disponibles en el simulador MSX88, comenzando con el caracter cuyo 
+;código es el número 01H. 
+
+ORG 1000h ;PARAMETROS, Memoria  de datos
+  CAR DB 80H
+  FIN DB ?
+  
+ORG 3000h ;SUBRUTINAS
+  IMPRIMIR: MOV BX,OFFSET CAR
+            MOV AL, OFFSET FIN - OFFSET CAR
+            INT 7
+  RET
+  
+ORG 2000h ;PROGRAMA PRINCIPAL
+  LOOP: CALL IMPRIMIR
+        MOV CL,CAR
+        CMP CL, 0FFH
+        JZ FINAL
+        INC CAR
+        JMP LOOP
+  FINAL:INT 0        
+END

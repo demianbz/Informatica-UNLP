@@ -1,0 +1,71 @@
+program practica4ej5;
+const
+	tam=5;
+type
+	vector=array[1..tam]of integer;
+	
+procedure leervector(var v:vector);
+var
+	diml,num:integer;
+begin
+	diml:=1;
+	write('ingrese un numero:');readln(num);
+	while(num<>0)do
+	begin
+		v[diml]:=num;
+		diml:=diml+1;
+		write('ingrese un numero:');readln(num);
+	end;
+end;
+procedure elementomaximo(v:vector;var max,posmax:integer);
+var
+	i,num:integer;
+begin
+	for i:=1 to tam do
+	begin
+		num:=v[i];
+		if(num>max)then
+		begin
+			max:=v[i];
+			posmax:=i;
+		end;
+	end;
+end;
+procedure elementominimo(v:vector;var min,posmin:integer);
+var
+	i,num:integer;
+begin
+	for i:=1 to tam do
+	begin
+		num:=v[i];
+		if(num<min)then
+		begin
+			min:=v[i];
+			posmin:=i;
+		end;
+	end;
+end;
+procedure intercambio(v:vector;var posmax,posmin:integer);
+var
+	aux:integer;
+begin
+	aux:=v[posmax];
+	v[posmax]:=v[posmin];
+	v[posmin]:=aux;
+end;
+var
+	v:vector;
+	max,min,posmax,posmin:integer;
+begin
+	max:=-9999;
+	posmax:=0;
+	min:=9999;
+	posmin:=0;
+	leervector(v);
+	elementomaximo(v,max,posmax);
+	writeln('la posicion del mayor elemento:',max,' es: ',posmax);
+	elementominimo(v,min,posmin);
+	writeln('la posicion del menor elemento:',min,' es: ',posmin);
+	intercambio(v,posmax,posmin);
+	writeln('el elemento maximo: ',max,' que se encontraba en la posicion: ',posmax,' fue intercambiado con el elemento minimo: ',min,' que se encontraba en la posicion: ',posmin);
+end.

@@ -1,0 +1,75 @@
+program ej3p3;
+const
+	UNESCO=23.435;
+type
+	escuelas=record
+	cue:integer;
+	nombre:string;
+	cantd:integer;
+	canta:integer;
+	local:string;
+    end;
+procedure leeresc(var e:escuelas);
+begin
+	writeln('ingrese el cue de la escuela');
+	readln(e.cue);
+	writeln('ingrese el nombre de la escuela');
+	readln(e.nombre);
+	writeln('ingrese la cantidad de docentes');
+	readln(e.cantd);
+	writeln('ingrese la cantidad de alumnos');
+	readln(e.canta);
+	writeln('ingrese la localidad');
+	readln(e.local);
+end;
+procedure relacionDA(docentes,alumnos:integer;relacion:real);
+begin
+	relacion:=docentes/alumnos
+end;
+procedure mejorrelacion(relacion:real;var max1,max2,cuemax1,cuemax2:real;var nommax1,nommax2:string; nombre:string; cue:integer);
+begin
+	if(relacion<max1)then
+	begin
+		max2:=max1;
+		cuemax2:=cuemax1;
+		nommax2:=nommax1;
+		max1:=relacion;
+		cuemax1:=cue;
+		nommax1:=nombre;
+	end;
+	if(relacion<max2)then
+	begin
+		max2:=relacion;
+		cuemax2:=cue;
+		nommax2:=nombre;
+	end;
+end;
+var
+	e:escuelas;
+	relacion,max1,max2,cuemax1,cuemax2:real;
+	nommax1,nommax2:string;
+	cantlp,i:integer;
+begin
+	max1:=-999;
+	max2:=-999;
+	cuemax1:=0;
+	cuemax2:=0;
+	nommax1:='vacio';
+	nommax2:='vacio';
+	cantlp:=0;
+	relacion:=0;
+	for i:=1 to 5 do 
+	begin
+		leeresc(e);
+		relacionDA(e.cantd,e.canta,relacion);
+		if(e.local='La Plata')then
+		begin
+			if(relacion>UNESCO)then
+				cantlp:=cantlp+1
+		end;
+		mejorrelacion(relacion,max1,max2,cuemax1,cuemax2,nommax1,nommax2,e.nombre,e.cue);
+		end;
+	writeln('la cantidad de escuelas de la plata con una relacion superior a la de unesco fue: ',cantlp);
+	writeln('el cue y el nombre de la mejor escuela fue: ',cuemax1 ,nommax1);
+	writeln('el cue y el nombre de la segunda mejor escuela fue: ',cuemax2 ,nommax2);
+end.

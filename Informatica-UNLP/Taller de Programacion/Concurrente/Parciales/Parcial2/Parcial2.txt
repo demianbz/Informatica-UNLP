@@ -1,0 +1,142 @@
+programa parcial2
+procesos
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores:=flores+1
+  fin
+  
+  proceso juntarPapeles(ES papeles:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles:=papeles+1 
+  fin
+  
+  proceso EnviarID
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+  fin
+  
+  proceso RecorrerAv(ES papeles:numero)
+  variables
+    Av:numero
+  comenzar
+    repetir 7
+      mover
+      juntarPapeles(papeles)
+    juntarPapeles(papeles)
+    Av:=PosAv
+    BloquearEsquina(Av,12)
+    mover
+    juntarPapeles(papeles)
+    mover
+    LiberarEsquina(Av,12)
+    repetir 11
+      juntarPapeles(papeles)
+      mover
+    juntarPapeles(papeles)
+  fin
+  
+  proceso RecorrerCa(ES flores:numero)
+  variables
+    Av:numero
+  comenzar
+    derecha
+    repetir 4
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+    Av:=PosAv
+    BloquearEsquina(Av+1,12)
+    mover
+    juntarFlores(flores)
+    mover
+    LiberarEsquina(Av+1,12)
+    repetir 4
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+  fin
+  
+areas
+  equipoAzul: AreaPC(2,4,12,24)
+  equipoVerde: AreaPC(16,4,26,24)
+  areaFS: AreaP(1,1,1,1)
+  
+robots
+  robot florero
+  variables
+    flores:numero
+    id:numero
+  comenzar
+    RecibirMensaje(id,fs)  
+    RecorrerCa(flores)  
+    EnviarMensaje(id,fs)
+    EnviarMensaje(flores,fs)
+  fin
+  
+  robot papelero
+  variables
+    papeles:numero
+    id:numero
+  comenzar
+    RecibirMensaje(id,fs)
+    RecorrerAv(papeles)
+    EnviarMensaje(id,fs)
+    EnviarMensaje(papeles,fs)
+  fin
+  
+  robot fiscalizador
+  variables
+    totalEquipoA:numero
+    totalEquipoV:numero
+    id:numero
+    flores:numero
+    papeles:numero
+  comenzar
+    EnviarID
+    totalEquipoA:=0
+    totalEquipoV:=0
+    repetir 4
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(flores,r1)
+        totalEquipoA:=totalEquipoA+flores
+      sino
+        si(id=2)
+          RecibirMensaje(papeles,r2)
+          totalEquipoA:=totalEquipoA+papeles
+        sino
+          si(id=3)
+            RecibirMensaje(flores,r3)
+            totalEquipoV:=totalEquipoV+flores
+          sino
+            RecibirMensaje(papeles,r4)
+            totalEquipoV:=totalEquipoV+papeles
+    si(totalEquipoV>totalEquipoA)
+      Informar('Ganador Equipo Verde con',totalEquipoV)
+    sino
+      Informar('Ganador Equipo Azul con',totalEquipoA)
+  fin
+
+variables
+  r1,r3:florero
+  r2,r4:papelero
+  fs:fiscalizador
+comenzar
+  AsignarArea(r1,equipoAzul)
+  AsignarArea(r2,equipoAzul)
+  AsignarArea(r3,equipoVerde)
+  AsignarArea(r4,equipoVerde)
+  AsignarArea(fs,areaFS)
+  Iniciar(r1,2,12)
+  Iniciar(r2,7,4)
+  Iniciar(r3,16,12)
+  Iniciar(r4,21,4)
+  Iniciar(fs,1,1)
+fin

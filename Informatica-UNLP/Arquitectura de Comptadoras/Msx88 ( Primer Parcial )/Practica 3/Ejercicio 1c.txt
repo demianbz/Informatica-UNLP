@@ -1,0 +1,31 @@
+;C) Escribir un programa que permite encender y apagar las luces mediante
+;las llaves. El programa no deberá terminar nunca, y continuamente revisar 
+;el estado de las llaves, y actualizar de forma consecuente el estado de
+;las luces. La actualización se realiza prendiendo la luz i si la llave
+;i correspondiente está encendida (valor 1), y apagándola en caso contrario.
+;Por ejemplo, si solo la primera llave está encendida, entonces solo la primera 
+;luz se debe quedarencendida.
+
+;PIO
+  PA EQU 30H
+  PB EQU 31H
+  CA EQU 32H
+  CB EQU 33H
+  
+ORG 2000H
+  ;CONFIGURAMOS PA (ENTRADA) Y PB (SALIDA)
+  MOV AL,11111111B
+  OUT CA,AL ;CA=11111111
+  MOV AL,00000000B
+  OUT CB,AL ;CB=00000000
+
+  ;LEEMOS EL ESTADOS DE LAS LLAVES (PA)
+LOOP: IN AL,PA
+
+  ;MANDAR INFORMACION DE LAS LLAVES A LAS LUCES (PB)
+  OUT PB,AL
+
+  ;LOOP INFINITO
+  JMP LOOP
+INT 0
+END

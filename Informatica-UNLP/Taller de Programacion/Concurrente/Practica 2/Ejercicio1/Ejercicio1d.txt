@@ -1,0 +1,105 @@
+{d. Modifique el inciso anterior para que ahora el fiscalizador informe también, cuál fue el robot ganador}
+
+programa ejercicio1
+procesos 
+  proceso juntarFlores(ES flor:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flor:=flor + 1
+  fin
+  
+  proceso recorrerAvenida (ES flores:numero) 
+  comenzar
+    repetir 9
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+  fin
+  
+areas
+  ciudad: AreaC(2,1,2,1)
+  area1: AreaP(1,1,1,10)
+  area2: AreaP(2,11,2,20)
+  area3: AreaP(3,21,3,30)
+  area4: AreaP(4,31,4,40)
+  area5: AreaP(5,41,5,50)
+  area6: AreaP(6,51,6,60)
+  
+robots
+  robot tipo1
+  variables
+    flores:numero
+    quien:numero
+  comenzar
+    flores:=0
+    RecibirMensaje(quien,fiscal)
+    recorrerAvenida(flores)
+    EnviarMensaje(quien,fiscal)
+    EnviarMensaje(flores,fiscal)
+  fin
+   
+  robot fiscalizador
+  variables
+    flores:numero
+    maxF:numero
+    quien:numero
+    rmax:numero
+  comenzar
+    maxF:=0
+    {Enviar quien soy}
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+    EnviarMensaje(5,r5)
+    EnviarMensaje(6,r6)
+    repetir 6
+      RecibirMensaje(quien,*)
+      si(quien=1)
+        RecibirMensaje(flores,r1)
+      sino
+        si(quien=2)
+          RecibirMensaje(flores,r2)
+        sino
+          si(quien=3)
+            RecibirMensaje(flores,r3)
+          sino
+            si(quien=4)
+              RecibirMensaje(flores,r4)
+            sino
+              si(quien=5)
+                RecibirMensaje(flores,r5)
+              sino
+                RecibirMensaje(flores,r6)
+      si(maxF<flores)
+        maxF:=flores
+        rmax:=quien
+    Informar('Cant Max y Robot Max',maxF,rmax)
+  fin 
+   
+variables
+  r1:tipo1
+  r2:tipo1
+  r3:tipo1
+  r4:tipo1
+  r5:tipo1
+  r6:tipo1
+  fiscal:fiscalizador
+  
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,area3)
+  AsignarArea(r4,area4)
+  AsignarArea(r5,area5)
+  AsignarArea(r6,area6)
+  AsignarArea(fiscal,ciudad)
+  Iniciar(r1,1,1)
+  Iniciar(r2,2,11)
+  Iniciar(r3,3,21)
+  Iniciar(r4,4,31)
+  Iniciar(r5,5,41)
+  Iniciar(r6,6,51)
+  Iniciar(fiscal,2,1)
+fin

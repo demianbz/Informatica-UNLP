@@ -1,0 +1,124 @@
+{1- Clientes y Servidores.                                                               Existe un robot que sirve de flores a tres robots clientes. Cada cliente solicita al servidor que le deposite en su esquina siguiente una cantidad de flores aleatoria (entre 1 y 4). Por ejemplo, si el cliente se encuentra en la esquina (2,1) le solicitará que coloque x cantidad de flores en la esquina (2,2). Cuando el robot servidor deposita las flores en la esquina solicitada, el cliente las junta y las deposita una a una a lo largo de la avenida en la que se encuentra. El programa finaliza cuando todos los robots clientes completan su avenida. Asuma que el robot servidor tiene flores suficientes en su bolsa. El robot servidor se inicia en la esquina (100,100) Los robots clientes inician en las esquinas (1,1) , (2,1) y (3,1) respectivamente}
+
+programa ejercicio1
+procesos
+  proceso EnviarID
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+  
+  proceso depositarFlores(E n:numero ; E Av:numero ; E Ca:numero)
+  variables
+    AvIni,CaIni:numero
+  comenzar
+    AvIni:=PosAv
+    CaIni:=PosCa
+    Pos(Av,Ca)
+    repetir n
+      depositarFlor
+    Pos(AvIni,CaIni)
+  fin
+
+  proceso avanzar(E n:numero)
+  comenzar
+    si(PosCa<100)
+      mover
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+    mientras((HayFlorEnLaBolsa)&(PosCa<100))
+      depositarFlor 
+      mover
+  fin
+
+areas
+  areaR1: AreaPC(1,1,1,100)
+  areaR2: AreaPC(2,1,2,100)
+  areaR3: AreaPC(3,1,3,100)
+  areaServi: AreaP(100,100,100,100)
+
+robots
+  robot servidor
+  variables
+    Av,Ca:numero
+    flores:numero
+    id:numero
+    seguirR1:boolean
+    seguirR2:boolean 
+    seguirR3:boolean       
+  comenzar
+    EnviarID
+    seguirR1:=V
+    seguirR2:=V
+    seguirR3:=V
+    mientras(seguirR1)|(seguirR2)|(seguirR3)
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(flores,r1)
+        si(flores<>0)
+          RecibirMensaje(Av,r1)
+          RecibirMensaje(Ca,r1)
+          depositarFlores(flores,Av,Ca)
+          EnviarMensaje(V,r1)
+        sino
+          seguirR1:=F
+      sino 
+        si(id=2)
+          RecibirMensaje(flores,r2)
+          si(flores<>0)
+            RecibirMensaje(Av,r2)
+            RecibirMensaje(Ca,r2)
+            depositarFlores(flores,Av,Ca)
+            EnviarMensaje(V,r2)
+          sino
+            seguirR2:=F
+        sino
+          RecibirMensaje(flores,r3)
+          si(flores<>0)
+            RecibirMensaje(Av,r3)
+            RecibirMensaje(Ca,r3)
+            depositarFlores(flores,Av,Ca)  
+            EnviarMensaje(V,r3)
+          sino
+            seguirR3:=F
+  fin
+  
+  robot cliente
+  variables
+    cantF:numero
+    av,ca:numero
+    id:numero
+    termino:boolean
+  comenzar
+    RecibirMensaje(id,servi)
+    mientras(PosCa<100)
+      av:=PosAv
+      ca:=PosCa
+      Random(cantF,1,4)
+      EnviarMensaje(id,servi)
+      EnviarMensaje(cantF,servi)
+      EnviarMensaje(av,servi)
+      EnviarMensaje(ca+1,servi)
+      RecibirMensaje(termino,servi)
+      avanzar(cantF)
+    EnviarMensaje(id,servi)
+    EnviarMensaje(0,servi)
+  fin
+
+variables
+  r1,r2,r3:cliente
+  servi:servidor
+comenzar
+  AsignarArea(servi,areaServi)
+  AsignarArea(servi,areaR1)
+  AsignarArea(servi,areaR2)
+  AsignarArea(servi,areaR3)
+  AsignarArea(r1,areaR1)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r3,areaR3)
+  Iniciar(r1,1,1)
+  Iniciar(r2,2,1)
+  Iniciar(r3,3,1)
+  Iniciar(servi,100,100)
+fin

@@ -1,0 +1,46 @@
+{Realice un programa que llene un vector de 10 elementos enteros positivos y luego informe la primer posición donde aparece un múltiplo de 3. Suponga que los nros leídos son positivos y que puede no existir al menos un múltiplo de 3}
+program arrgeglosyvectores;
+const
+	tam=10;
+	multi=3;
+type
+	vector=array[1..tam] of integer;
+
+procedure cargar(var v:vector);
+var
+	i,valor:integer;
+begin
+	writeln('ingrese 10 numeros');
+	for i:=1 to tam do
+	begin
+		readln(valor);
+		v[i]:=valor;
+	end;
+end;
+function posicion(v:vector):integer;
+var	
+	pos,resto:integer;
+	seguir:boolean;
+begin
+	seguir:=true;
+	pos:=1;
+	while((pos<=tam)and(seguir=true))do
+		begin
+			resto:=v[pos] mod multi;
+			if (resto=0) then
+				seguir:=false
+			else
+				pos:=pos+1;
+	end;
+	if(seguir=false)then posicion:=pos
+					else posicion:=-1;
+	
+end;
+var
+	v:vector;
+	pos:integer;
+begin
+	cargar(v);
+	pos:= posicion(v);
+	writeln('la posicion del primer multiplo de ' ,multi,' es: ',pos);
+end.
