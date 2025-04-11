@@ -11,3 +11,4 @@ __pycache__/
 .gitattributes
 mi-repo-filtrado/
 mi-repo-filtrado/
+*.o
