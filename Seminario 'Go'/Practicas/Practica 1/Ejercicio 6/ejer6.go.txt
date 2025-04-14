@@ -1,0 +1,63 @@
+/*6. Escriba un programa que lee desde la entrada estándar dos 
+enteros y retorne la división entre el mayor de ellos y el menor
+Realizar el mismo programa considerando que se leen dos 
+enteros sin signo. Luego modifique para que trabaje con reales 
+(punto flotante). Ver que sucede con las división por cero. */
+/*con enteros (int, uint), dividir por 0 causa un panic: el programa se interrumpe.
+Con float64, Go no lanza error, pero devuelve:
++Inf (infinito positivo) o NaN (Not a Number), según el caso.*/
+
+package main
+import "fmt"
+
+func main() {
+    //Division con enteros
+    var n1,n2,division int
+    fmt.Print("Ingrese un numero:");fmt.Scanln(&n1)
+    fmt.Print("Ingrese otro numero:");fmt.Scanln(&n2)
+    if(n1>n2){
+        division = n1/n2
+    }else{
+        division = n2/n1
+    }
+    fmt.Println("---Division con Enteros---")
+    fmt.Println("Resultado:",division)
+    
+    //Division con enteros sin signo
+    
+    var n1s, n2s, divisions uint
+
+    fmt.Print("Ingrese un número entero sin signo: ")
+    fmt.Scanln(&n1s)
+    fmt.Print("Ingrese otro número entero sin signo: ")
+    fmt.Scanln(&n2s)
+    if (n1s>n2s) {
+        divisions = n1s/n2s
+    } else {
+        divisions = n2s/n1s
+    }
+    
+    fmt.Println("---Division con enteros sin signo---")
+    fmt.Println("Resultado:",divisions)
+    
+    var n1f, n2f float64
+    var divisionf float64
+
+    fmt.Print("Ingrese un número real: ")
+    fmt.Scanln(&n1f)
+
+    fmt.Print("Ingrese otro número real: ")
+    fmt.Scanln(&n2f)
+
+
+    if (n1f > n2f) {
+        divisionf = n1f / n2f
+    } else {
+        divisionf = n2f / n1f
+    }
+    
+    fmt.Println("---Division con reales---")
+    fmt.Printf("Resultado: %.2f", divisionf)
+    
+    
+}
