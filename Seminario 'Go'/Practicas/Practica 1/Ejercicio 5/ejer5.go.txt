@@ -1,0 +1,82 @@
+/*Realizar un programa que lea un número y muestre el valor 
+correspondiente aplicando la siguiente función sobre el mismo: 
+a. ¿Qué tiene de particular la función con el 0 (cero), se 
+puede escribir sin opción default/else?. Re-escribir con otra 
+estructura de control selectiva.  
+b. Re-escribir la función usando punto flotante. 
+Sub-objetivo: Uso de E/S de enteros y punto flotante. 
+Operaciones aritméticas sobre enteros y punto flotante (potencia
+valor absoluto, negación y módulo).*/
+
+package main
+import "fmt"
+import "math"
+
+func funcion (x int){
+    switch  {
+    case (x < -18):
+        modulo := int(math.Abs(float64(x)))
+        fmt.Println("Modulo de |",x,"| =",modulo)
+    case (x>=-18 && x<=-1):
+        mod := x % 4
+        fmt.Println(x,"MOD 4 =",mod)
+    case (x>=1 && x<20):
+        alcuadrado:= x*x
+        fmt.Println(x,"al cuadrado=",alcuadrado)
+    case (x>=20):
+        negativo:= -x
+        fmt.Println("El negativo de",x,"es",negativo)
+  }
+}
+
+func funcionIf (x int){
+    if (x < -18){
+        modulo := int(math.Abs(float64(x)))
+        fmt.Println("Modulo de |",x,"| =",modulo)
+    }else{
+        if(x>=-18 && x<=-1){
+            mod := x % 4
+            fmt.Println(x,"MOD 4 =",mod)
+        }
+    }
+    if(x>=1 && x<20){
+        alcuadrado:= x*x
+        fmt.Println(x,"al cuadrado=",alcuadrado)
+    }else{
+        if(x>=20){
+            negativo:= -x
+            fmt.Println("El negativo de",x,"es",negativo)            
+        }
+    } 
+}
+
+func funcionFlotante(x float64){
+    switch  {
+    case (x < -18):
+        modulo := math.Abs(x)
+        fmt.Println("Modulo de |",x,"| =",modulo)
+    case (x>=-18 && x<=-1):
+        mod := math.Mod(x,4)
+        fmt.Println(x,"MOD 4 =",mod)
+    case (x>=1 && x<20):
+        alcuadrado:= x*x
+        fmt.Println(x,"al cuadrado=",alcuadrado)
+    case (x>=20):
+        negativo:= -x
+        fmt.Println("El negativo de",x,"es",negativo)
+  }
+}
+
+func main() {
+    var x int;
+    fmt.Print("Ingrese un numero: ");
+    fmt.Scanln(&x);
+    fmt.Println("---Funcion---");
+    funcion(x);
+    fmt.Println("---Funcion usando if---");
+    funcionIf(x);
+    fmt.Println("---Funcion usando flotante---");
+    xf:=float64(x);
+    funcionFlotante(xf);
+    
+}
