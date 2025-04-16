@@ -1,0 +1,52 @@
+/*7. Las temperaturas de los pacientes de un hospital se dividen en 3
+grupos: alta (mayor de 37.5), normal (entre 36 y 37.5) y baja
+(menor de 36). Se deben leer 10 temperaturas de pacientes e
+informar el porcentaje de pacientes de cada grupo. Luego se
+debe imprimir el promedio entero entre la temperatura máxima y
+la temperatura mínima.
+a. ¿Se puede utilizar el case para tipos reales en otros
+lenguajes?
+En la mayoría de los lenguajes, NO se recomienda ni permite usar switch-case con float directamente.
+b. ¿ Cómo se realizan las conversiones entre reales (punto
+flotante) y enteros en otros lenguajes ?
+De real (float) a entero (int):
+Python : int(3.9)
+C/C++ : int x = (int)3.9;
+Java: int x = (int) 3.9;
+Sub-objetivo: El tipado fuerte, usar casting. Operaciones y
+E/S con float. Casting en otros lenguajes.*/
+
+package main
+import "fmt"
+
+func main() {
+    v:=[10]float64{40.5,35,36.5,37.5,35,34.5,35.5,41,34,37}
+    //fmt.Println(v)
+    var cantA,cantN,cantB float64
+    max := 0.0
+    min := 100.0
+    for i:=0 ; i<10 ; i++{
+        switch {
+        case (v[i]>37.5):
+            cantA++
+        case (v[i]<=37.5 && v[i]>=36):
+            cantN++
+        case (v[i]<36):
+            cantB++
+        }
+        if(v[i]>max){
+            max=v[i]
+        }
+        if(v[i]<min){
+            min=v[i]
+        }
+    }
+    fmt.Println("Porcentaje de temperaturas ALTAS:",(cantA/10)*100,"%")  //Idem cant * 10
+    fmt.Println("Porcentaje de temperaturas NORMALES:",(cantN/10)*100,"%")
+    fmt.Println("Porcentaje de temperaturas BAJAS:",(cantB/10)*100,"%")
+    
+    promEnt:=int((max+min)/2)
+    fmt.Println("Promedio entero entre la temp Max y Temp Min:",promEnt)
+    
+    
+}

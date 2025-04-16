@@ -1,0 +1,30 @@
+/*8. Realizar un programa que lea el punto cardinal (como caracter o
+string) del cual viene el viento (‘N’, ‘S’, ‘E’, ‘O’) y envíe a la salida
+estándar hacia cuál se dirigiría.
+Sub-objetivo: Uso de case con la opción por default. E/S
+caracteres o strings.
+a. ¿Cómo se escribe el default en el case de otros lenguajes?
+*/
+
+package main
+import "fmt"
+
+func main() {
+  var char string 
+  //fmt.Println(string(char))
+  fmt.Print("Ingrese un punto cardinal:");fmt.Scanln(&char)
+  
+  switch char[0]{
+  case 'N':
+    fmt.Println("El viento se digrige hacia el SUR")
+  case 'S':
+    fmt.Println("El viento se dirige hacia el NORTE")
+  case 'E':
+    fmt.Println("El viento se dirige hacia el OESTE")
+  case 'O':
+    fmt.Println("El viento se dirige hacia el ESTE")
+  default:
+    fmt.Println("Punto cardinal invalido")
+  }
+  
+}
