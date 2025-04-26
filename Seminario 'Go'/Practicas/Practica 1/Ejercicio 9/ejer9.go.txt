@@ -1,0 +1,102 @@
+/*9. Realice un programa que reciba una frase e imprima en pantalla 
+la misma frase reemplazando las ocurrencias de “jueves” por 
+“martes” respetando las letras minúsculas o mayúsculas de la 
+palabra original en su posición correspondiente. Por ejemplo, se
+reemplaza “Jueves” por “Martes” o “jueveS” por “marteS”.*/
+
+/*¿Por qué usar strings.Builder y rune?
+Porque las cadenas en Go son inmutables, y manejar letras con acentos o mayúsculas/minúsculas correctamente requiere trabajar con rune (caracteres Unicode) en lugar de simplemente byte.*/
+
+
+package main
+import "fmt"
+import "strings"
+import "bufio"
+import "os"
+
+func cambiarMartes(palabraOriginal, martes string) string{
+    var resultado string
+    for i:=0 ; i<len(palabraOriginal) ;i++{
+        aux := martes[i]
+        if(palabraOriginal[i]>= 'A' && palabraOriginal[i]<= 'Z'){
+            resultado += strings.ToUpper(string(aux))//tengo que hacer el casteo porque aux se me guardo como byte y espera un string
+        }else{
+            resultado += strings.ToLower(string(aux))
+        }
+    }
+    return resultado 
+}
+
+func verificarSigno(palabraOriginal string)(string,string){
+    palabra,signo := palabraOriginal,""
+    ult:=palabraOriginal[len(palabraOriginal)-1]//me da el último carácter (como byte)
+    if(strings.ContainsRune(".,!:;?¿",rune(ult))){
+        palabra=palabraOriginal[:len(palabraOriginal)-1] //me da la subcadena sin el último carácter
+        signo=string(ult) //hago el casteo a string
+    }
+        return palabra,signo
+    }
+
+
+func main() {
+    var frase string
+    fmt.Print("Ingrese una frase: ")
+    reader:= bufio.NewReader(os.Stdin)
+    frase,_ = reader.ReadString('\n')
+    frase = strings.TrimSpace(frase)
+    //fmt.Println(frase)
+    
+    // Uso strings.Fields para dividir la frase en palabras
+    palabra:= strings.Fields(frase)
+    
+    
+    
+    for i:= 0 ; i<len(palabra) ; i++{
+        pal,signo:=verificarSigno(palabra[i]) //verifico si hay algun signo
+        if(strings.EqualFold(pal,"jueves")){
+            palabra[i] = cambiarMartes(pal,"martes") + signo
+        }
+    }
+    
+    // Uno las palabras nuevamente en una frase
+	fraseModificada := strings.Join(palabra, " ") 
+	//une todas las palabras en el slice palabras en una única cadena, insertando un espacio " " entre cada palabra
+	fmt.Println("Frase modificada:", fraseModificada)
+    
+    
+}
+/*
+    strings.ContainsRune(cadena string, r rune)
+    //Devuelve true si la rune (r) se encuentra en la cadena, y false si no.
+    //verifica si un carácter (runa) está presente dentro de una cadena.
+
+    strings.Index(cadena,substring)
+    //busca un substring (una palabra o parte del texto) dentro de una cadena de texto.
+    //Te dice en qué posición (índice) aparece por primera vez ese substring. Si no lo encuentra, devuelve -1.
+
+    strings.Join(palabras, " ") 
+	//une todas las palabras en el slice palabras en una única cadena, insertando un espacio " " entre cada palabra
+
+    len(palabras) // dimension del slice de palabras
+    
+    strings.EqualFold(palabra, "OtraPalabra")
+    //Compara dos cadenas sin importar si tienen letras en mayúscula o minúscula.
+
+    strings.Fields("Hoy es jueves")
+    //Divide el texto usando cualquier cantidad de espacios, tabs o saltos de línea como separadores. No considera comas, puntos, etc.
+    //Convierte esa cadena en un slice de palabras, así:
+    //["Hoy", "es", "jueves"]
+    
+    strings.ToUpper("jueves")
+    //Convierte todas las letras de una cadena a mayúsculas.
+    //fmt.Println(strings.ToUpper("jueves")) = "JUEVES"
+    
+    strings.ToLower("JUEVES")
+    //Convierte todas las letras de una cadena a minusculas.
+    //fmt.Println(strings.ToLower("JUEVES")) = "jueves"
+    
+    strings.Title("jueves martes")
+    //Convierte la primera letra de cada palabra a mayúscula y el resto a minúscula.
+    //fmt.Println(strings.Title("jueves martes")) = "Jueves Martes"
+    
+*/
