@@ -1,0 +1,72 @@
+package tp3ejercicio1;
+
+import java.util.List;
+import java.util.LinkedList;
+
+public class GeneralTree <T>{
+    private T data;
+    private List<GeneralTree<T>> children = new LinkedList<GeneralTree<T>>();
+    
+    
+    public GeneralTree(){
+        
+    }
+    
+    public GeneralTree(T data){//inicializa un árbol que tiene como raíz un nodo y este nodo tiene
+                               // el dato pasado como parámetro y una lista vacía.
+        this.data = data;
+    }
+    
+    public GeneralTree(T data , List<GeneralTree<T>> children){ // inicializa un árbol que tiene como raíz a un nodo y este nodo tiene
+                                                                //el dato pasado como parámetro y como hijos children.
+        this(data);
+        this.children = children;
+    }
+    
+    public T getData(){ // retorna el dato almacenado en la raíz del árbol.
+        return data;
+    }
+    
+    public void setData(T data){
+        this.data = data;
+    }
+    
+    public List<GeneralTree <T>> getChildren(){ //retorna la lista de hijos de la raíz del árbol
+        return this.children;
+    }
+    
+    public void setChildren(List<GeneralTree<T>> children) {
+        if (children != null)
+            this.children = children;
+    }
+    
+    public void addChild(GeneralTree <T> child){    // agrega un hijo al final de la lista de hijos del árbol
+        this.getChildren().add(child);
+    }    
+    
+    public boolean hasChildren(){   // devuelve verdadero si la lista de hijos del árbol no es null y tampoco es vacía
+        return !this.children.isEmpty();
+    }
+    
+    public boolean isEmpty(){       //devuelve verdadero si el dato del árbol es null y además no tiene hijos
+        return this.data == null && !this.hasChildren();
+    }
+        
+    public void removeChild(GeneralTree <T> child){     //elimina del árbol el hijo pasado como parámetro.
+        if(this.hasChildren())
+            children.remove(child);
+    }
+    
+    public int altura() { //devuelve la altura del árbol, es decir, la longitud del camino más largo  desde el nodo raíz hasta una hoja.
+        return 0;
+    }
+    
+    public int nivel(T dato){ //devuelve la profundidad o nivel del dato en el árbol. El nivel de un nodo es la longitud del único camino de la raíz al nodo.
+        return 0;
+    }
+    
+    public int ancho(){ //la amplitud (ancho) de un árbol se define como la cantidad de nodos que se encuentran en el nivel que posee la mayor cantidad de nodos.
+        return 0;
+    }
+    
+}
