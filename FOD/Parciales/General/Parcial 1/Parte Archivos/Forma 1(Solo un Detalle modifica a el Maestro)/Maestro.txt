@@ -1,0 +1,15 @@
+1001 Paracetamol
+50 20 No
+Analgesico comun
+1002 Amoxicilina
+10 15 Requiere
+Antibiotico fuerte
+1003 Ibuprofeno
+30 10 No
+Antiinflamatorio
+1004 Curaplus
+20 15 No
+ParaGripe
+1005 IbuprofenoMax
+10 5 Requiere
+AntiinflamatorioMax

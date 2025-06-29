@@ -1,0 +1,12 @@
+1 Paracetamol
+100 20 Requiere
+Analgésico y antipirético
+2 Ibuprofeno
+80 30 No
+Antiinflamatorio no esteroideo
+3 Amoxicilina
+50 25 Requiere
+Antibiótico de amplio espectro
+4 Loratadina
+70 20 No
+Antihistamínico para alergias
