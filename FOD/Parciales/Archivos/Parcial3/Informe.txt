@@ -1,0 +1,12 @@
+10129 Paracetamol
+ 2025-06-01
+1017 Paracetamol
+ 2025-06-02
+10217 Ibuprofeno
+ 2025-06-01
+10216 Ibuprofeno
+ 2025-06-02
+10324 Amoxicilina
+ 2025-06-03
+10425 Omeprazol
+ 2025-06-03

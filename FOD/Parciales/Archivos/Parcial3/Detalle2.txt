@@ -1,0 +1,12 @@
+101 Paracetamol
+8 2025-06-01
+Contado
+102 Ibuprofeno
+5 2025-06-01
+Tarjeta
+102 Ibuprofeno
+9 2025-06-02
+Contado
+104 Omeprazol
+15 2025-06-03
+Contado
