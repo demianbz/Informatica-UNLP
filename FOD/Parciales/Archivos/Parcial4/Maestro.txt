@@ -1,0 +1,15 @@
+1001 Camisa_Lisa
+10 Azul
+399.99 Camisa
+1002 Pantalon_Jeans
+5 AzulOscuro
+599.50 Pantalon
+1003 Remera_Estampada
+20 Blanca
+199.99 Remera
+1004 Campera_De_Cuero
+2 Negra
+1299.00 Campera
+1005 Short_Deportivo
+15 Rojo
+249.90 Short
