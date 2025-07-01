@@ -1,0 +1,6 @@
+1234 50000.00 Juan
+Perez
+2345 60000.00 Ana
+Lopez
+3456 45000.00 Pedro
+Gomez
