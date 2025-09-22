@@ -83,7 +83,10 @@ begin
 			end;
 			montoEliminadas:=montoEliminadas+act^.dato.montoT;
 			dispose(act);
-			act:=ant;
+			if(act=L)then
+				act:=L
+			else
+				act:=ant^.sig;
 		end;
 	end;
 	writeln('Monto acumulado en todas las facturas eliminadas: $',montoEliminadas:2:2);
